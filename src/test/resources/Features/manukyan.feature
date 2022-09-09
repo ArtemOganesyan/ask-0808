@@ -12,3 +12,10 @@ Feature: my first feature
     Given I open
     And I close
     Then I can open and close
+
+  @f3
+  Scenario: Hello
+    Given I can swing
+    And I can open
+    And I can close
+    Then I can start looking for job
