@@ -2,4 +2,4 @@
   Feature: Some feature
     @Test1
     Scenario: Log in
-      Given I open page ""
+      Given I open page {string}
