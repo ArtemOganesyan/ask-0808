@@ -16,8 +16,4 @@ import static org.assertj.core.api.Assertions.*;
 import static support.TestContext.getDriver;
 
 public class DaryaD {
-    @Given("Da Open URL {string}")
-    public void daOpenURLString(String url) {
-        getDriver().get(url);
-    }
 }
