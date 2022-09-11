@@ -95,14 +95,4 @@ public class DaryaD {
         getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
         Thread.sleep(4 * 1000);
     }
-
-//    @Then("Click DD the needed element with xpath {string}")
-//    public void clickDDTheNeededElementWithXpath(String xpath) {
-//        var items = getDriver().findElements(By.xpath(xpath));
-//        var item = items.get(items.size()-1);
-//        var button = item.findElement(By.xpath("descendant::button"));
-//        button.click();
-//    }
-
-
 }
