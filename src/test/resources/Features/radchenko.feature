@@ -2,4 +2,5 @@
   Feature: Practice with Git
     @scenario1
     Scenario: Practice with pull request
-      Given Test
+      Given Test practice
+      Then create push request 
