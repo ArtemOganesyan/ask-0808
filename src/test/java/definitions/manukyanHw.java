@@ -60,4 +60,13 @@ public class manukyanHw {
 
 
     }
-}
+
+    @Then("element with xpath {string} should contain text {string}")
+    public void elementWithXpathShouldContainText(String xpath, String text) {
+        String actualText = getDriver().findElement(By.xpath(xpath)).getText();
+        assertThat(actualText).contains(text);
+    }
+
+   
+    }
+
