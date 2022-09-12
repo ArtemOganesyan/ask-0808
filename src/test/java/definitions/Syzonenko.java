@@ -167,17 +167,26 @@ public class Syzonenko {
     public void iDeleteAssigmentsWithQuizName(String quizName) throws InterruptedException {
         //TODO: Doesnt delete all, StaleElement problem
         List<WebElement> allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
-        for (WebElement allquize : allquizes) {
-            allquize.click();
-            Thread.sleep(2000);
-            getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
-            Thread.sleep(2000);
-            Actions actions = new Actions(getDriver());
-            actions.sendKeys(Keys.TAB);
-            actions.sendKeys(Keys.ENTER);
-            actions.perform();
-            Thread.sleep(5000);
-        }
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10, 200);
+//        for (WebElement allquize : allquizes) {
+//            allquize.click();
+//            Thread.sleep(2000);
+//            getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
+//            Thread.sleep(2000);
+//            Actions actions = new Actions(getDriver());
+//            actions.sendKeys(Keys.TAB);
+//            actions.sendKeys(Keys.ENTER);
+//            actions.perform();
+//            Thread.sleep(5000);
+//        }
+       while (allquizes.size() > 0) {
+           getDriver().findElement(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon")).click();
+           wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
+           getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
+           wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]")));
+           getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")).click();
+
+       }
 
     }
 }
