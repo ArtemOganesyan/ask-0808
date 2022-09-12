@@ -95,4 +95,25 @@ public class DaryaD {
         getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
         Thread.sleep(4 * 1000);
     }
+
+    @And("Delete DD assignment")
+    public void deleteDDAssignment() throws InterruptedException {
+        //logout as a student
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
+        Thread.sleep(2 * 1000);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
+        Thread.sleep(4 * 1000);
+        //login as a teacher
+        getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys("da.dreizina@gmail.com");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys("12345Abc");
+        getDriver().findElement(By.xpath("//span[contains(text(),'Sign In')]")).click();
+        Thread.sleep(4 * 1000);
+        //delete assignment
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Assignments')]")).click();
+        Thread.sleep(4 * 1000);
+        getDriver().findElement(By.xpath("//*[contains(text(),'DaryaDre Quize Automation')]/parent::mat-panel-title/following::button")).click();
+        Thread.sleep(4 * 1000);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
+
+    }
 }
