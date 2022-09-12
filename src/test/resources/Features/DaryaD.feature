@@ -61,7 +61,7 @@ Feature:  Test set "Single Choice Question - Other"
     And Delete DD assignment
 
   @ASK_Portnov3
-  Scenario: "Others" text area accept Min 1 Characters - login as a student (teacher have assigned a quiz)
+  Scenario: "Others" text area accept Max 1000 Characters - login as a student (teacher have assigned a quiz)
     Given I DD open url "http://ask-stage.portnov.com"
     Then Assign the quiz to the student
     Then Type DD the text "dashanancy009@gmail.com" in the field with xpath "//input[@formcontrolname='email']"
