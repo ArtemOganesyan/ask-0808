@@ -4,4 +4,5 @@
 
       @scenario1
       Scenario: Login operation
-        Given something
+        Given I open page "http://ask-stage.portnov.com/"
+
