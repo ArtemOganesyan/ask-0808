@@ -17,6 +17,11 @@ import java.util.List;
 import static support.TestContext.getDriver;
 
 public class Syzonenko {
+    private static String logInEmailXpath = "//input[@formcontrolname='email']";
+    private static String  logInPasswordXpath = "//input[@formcontrolname='password']";
+    private static String logInSignInBtn = "//span[contains(text(),'Sign In')]";
+
+
     @Given("SK open page {string}")
     public void iOpenPage(String url) {
         getDriver().get(url);
@@ -24,9 +29,9 @@ public class Syzonenko {
 
     @And("SK log in as Teacher")
     public void iLogInAsTeacher() throws InterruptedException {
-        getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys("teacher.account@gmail.com");
-        getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys("Teacher");
-        getDriver().findElement(By.xpath("//span[contains(text(),'Sign In')]")).click();
+        getDriver().findElement(By.xpath(logInEmailXpath)).sendKeys("account.teacher@gmail.com");
+        getDriver().findElement(By.xpath(logInPasswordXpath)).sendKeys("Teacher");
+        getDriver().findElement(By.xpath(logInSignInBtn)).click();
         Thread.sleep(2000);
     }
 

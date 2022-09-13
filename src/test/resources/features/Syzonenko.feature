@@ -1,9 +1,12 @@
 @SyzonenkoFeature
   Feature: 'Create Assignment: Students', 'Grading: Quiz with no textual question'
-    @TeacherCanAssignQuizForStudentsIndividually
-    Scenario: Teacher can assign quiz for students individually
+    Background:
       Given SK open page "http://ask-stage.portnov.com/"
       And SK log in as Teacher
+
+
+    @TeacherCanAssignQuizForStudentsIndividually
+    Scenario: Teacher can assign quiz for students individually
       Then SK should see role as "TEACHER"
       And SK click Assigments button
       And SK click Create New Assignment button
@@ -15,8 +18,6 @@
 
     @TeacherCanAssignQuizForStudentsSearchingByGroupCode
     Scenario: Teacher can assign quiz for students searching by group code
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice: FAILED)" from 'Select quiz to assgin' drop-down list
@@ -27,8 +28,6 @@
 
     @TeacherCanAssignQuizToAllStudents
     Scenario: Teacher can assign quiz to all students
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice: PASSED)" from 'Select quiz to assgin' drop-down list
@@ -38,8 +37,6 @@
 
     @TeacherCanNOTAssignQuizIfStudentIsNotSelected
     Scenario: Teacher can NOT assign quiz if student is not selected
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice: PASSED)" from 'Select quiz to assgin' drop-down list
@@ -49,8 +46,6 @@
 
     @TeacherCanNOTAssignQuizIfQuizIsNotSelected
     Scenario: Teacher can NOT assign quiz if quiz is not selected
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select Student from 'Students list'
@@ -60,8 +55,6 @@
 
     @Quiz_with_multiple-choice_question_graded_automatically:FAILED
     Scenario: Quiz with multiple-choice question graded automatically:FAILED
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice and multiple-choice questions: FAILED)" from 'Select quiz to assgin' drop-down list
@@ -80,8 +73,6 @@
 
     @Quiz_with_multiple-choice_question_graded_automatically:PASS
     Scenario: Quiz with multiple-choice question graded automatically:PASS
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice and multiple-choice questions: PASSED)" from 'Select quiz to assgin' drop-down list
@@ -100,8 +91,6 @@
 
     @Quiz_with_single-choice_question_graded_automatically:FAILED
     Scenario: Quiz with single-choice question graded automatically:FAILED
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice: FAILED)" from 'Select quiz to assgin' drop-down list
@@ -119,8 +108,6 @@
 
     @Quiz_with_single-choice_question_graded_automatically:PASSED
     Scenario: Quiz with single-choice question graded automatically:PASSED
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(single-choice: PASSED)" from 'Select quiz to assgin' drop-down list
@@ -138,8 +125,6 @@
 
     @Quiz_with_multiple-choice_question_graded_automatically:FAILED
     Scenario: Quiz with multiple-choice question graded automatically:FAILED
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(multiple-choice: FAILED)" from 'Select quiz to assgin' drop-down list
@@ -156,8 +141,6 @@
 
     @Quiz_with_multiple-choice_question_graded_automatically:PASSED
     Scenario: Quiz with multiple-choice question graded automatically:PASSED
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
       And SK click Assigments button
       And SK click Create New Assignment button
       And SK select quiz "Test quiz(multiple-choice: PASSED)" from 'Select quiz to assgin' drop-down list
