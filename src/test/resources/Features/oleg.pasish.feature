@@ -1,8 +1,10 @@
 @new_feature
- Check out
+ Feature: Check out
 
  @new_feature1
-  I check out github
+  Scenario: log out
+  Given OP  enter giithub
+  Then OP log in
 
 
   
