@@ -7,7 +7,7 @@
 
 
     @ask-portnov1
-      Scenario:Login as Teacher
+      Scenario: : :Login as Teacher
       Given SS go to "http://ask-stage.portnov.com" page
       Then SS type "sawantsandhya.ni@gmail.com" into email field
       Then SS enter "12345" as password

@@ -46,7 +46,7 @@ public class Sawant {
     }
 
     @And("SS wait for {int} sec ")
-    public void ssWaitForSec(int timeout) throws InterruptedException {
+    public void ssWaitForSec(int sec) throws InterruptedException {
         Thread.sleep(1000);
 
 
