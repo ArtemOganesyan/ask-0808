@@ -25,7 +25,7 @@ public class amLibrary {
     public static String logOutconfirmationXP = "//span[contains(text(),'Log Out')]";
     public static String studentEmail = "extreme66@cbarata.pro";
     public static String studentPassword = "12345";
-    public static String lastAssignmentXP = "//tr[@class='ng-star-inserted'][9]//button";
+    public static String lastAssignmentXP = "//tr[@class='ng-star-inserted'][1]//button";
     public static String textualAnswerXP = "//textarea[@placeholder='Enter your answer']";
     public static String singleChAnswerXP = "//label[@for='mat-radio-2-input']";
     public static String multiplyCh1XP = "//label[@for='mat-checkbox-1-input']";
