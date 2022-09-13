@@ -12,7 +12,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import support.Helpers;
 
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
@@ -77,6 +81,16 @@ public class Oganesyan {
         Thread.sleep(1000);
         getDriver().findElement(By.xpath(XPathLibrary.questionSliderXpath)).sendKeys(Keys.ARROW_LEFT);
         Thread.sleep(10000);
+    }
+
+    @Given("OAV get activation code")
+    public void oavGetActivationCode() throws SQLException, IOException {
+        String acTok = Helpers.getAccessToken("jack@pirate.com");
+        System.out.println(acTok);
+        String[] resp = acTok.split(";");
+        int userid = Integer.valueOf(resp[0]);
+        String activationCode = resp[1];
+        Helpers.activateUser(userid, activationCode);
     }
 }
 
