@@ -6,12 +6,14 @@
 #      And OAV enter "12345Abc" as password
 #      Then OAV click SignIn button
 #      And OAV wait for 5 sec
-    Background:
-      Given OAV go to "http://ask-stage.portnov.com" page
-      Then OAV type "annya.manukyan@gmail.com" into email field
-      And OAV enter "Joseph1" as password
-      Then OAV click SignIn button
-      And OAV wait for 5 sec
+
+
+#    Background:
+#      Given OAV go to "http://ask-stage.portnov.com" page
+#      Then OAV type "annya.manukyan@gmail.com" into email field
+#      And OAV enter "Joseph1" as password
+#      Then OAV click SignIn button
+#      And OAV wait for 5 sec
 
 #    @scenario1
 #    Scenario: Validate my assignments page
@@ -24,3 +26,8 @@
     @scenario3
     Scenario: Create a quiz
       Then OAV goto Quizzes
+
+
+    @scenario4
+    Scenario: Activate user
+      Given OAV get activation code
