@@ -173,9 +173,9 @@
       Then SK should see quiz "Test quiz(multiple-choice: PASSED)" with Status: "PASSED"
 
 
-    @DeleteAllAssignmentsCreatedByTeacher
-    Scenario: Delete all Assignments created by Teacher
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
-      And SK click Assigments button
-      Then SK delete Assigments with quiz name "Test quiz"
+#    @DeleteAllAssignmentsCreatedByTeacher
+#    Scenario: Delete all Assignments created by Teacher
+#      Given SK open page "http://ask-stage.portnov.com/"
+#      And SK log in as Teacher
+#      And SK click Assigments button
+#      Then SK delete Assigments with quiz name "Test quiz"
