@@ -39,6 +39,7 @@ public class amLibrary {
     public static String gradedAtMyGradesXP = "//th[contains(text(),'Graded At')]";
     public static String quizMygradesXP = "//th[contains(text(),'Quiz')]";
     public static String statusMygradesXP = "//th[contains(text(),'Status')]";
+    public static String scoreMygradesXP = "//th[contains(text(),'Score')]";
     public static String dateTimeSubmittedMyGradesXP = "//tr[@class='ng-star-inserted'][1]/td[1]";
 
 
