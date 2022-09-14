@@ -1,8 +1,8 @@
 @SyzonenkoFeature
   Feature: 'Create Assignment: Students', 'Grading: Quiz with no textual question'
-    Background:
-      Given SK open page "http://ask-stage.portnov.com/"
-      And SK log in as Teacher
+#    Background:
+#      Given SK open page "http://ask-stage.portnov.com/"
+#      And SK log in as Teacher
 
 
     @TeacherCanAssignQuizForStudentsIndividually
@@ -154,6 +154,46 @@
       And SK click Submit my Answer button
       When SK click My Grades button
       Then SK should see quiz "Test quiz(multiple-choice: PASSED)" with Status: "PASSED"
+
+
+    @ChangePasswordStudentAccount
+    Scenario: Student can change Password in Settings
+  Given SK open page "http://ask-stage.portnov.com/"
+  And SK log in as Student
+  And SK click Settings button
+  And SK click Change Your Password
+  Then SK type "Student1" in current Password field
+  Then SK type "Student2" in New Password field
+  Then SK type "Student2" in Confirm New Password
+  Then SK click Change button
+  Then SK log out from current account
+  Then SK type "student.account@gmail.com" in email field
+  Then SK type "Student2" in password field
+  Then SK click Sign In button
+  Then SK should see role as "STUDENT"
+
+
+  @ForgotPassword
+  Scenario: Verify user able to reset password using Forgot Password
+  Given SK open page "http://ask-stage.portnov.com/"
+  Then SK click I forgot my password link
+  Then SK type "student.account@gmail.com" into Reset password email field
+  Then SK click Request Password Reset button
+  Then SK should see 'Your request is confirmd' message
+  And SK get Reset Password activation code for user with email "student.account@gmail.com"
+  Then SK set new password as "Student"
+  Then SK type "student.account@gmail.com" in email field
+  Then SK type "Student" in password field
+  Then SK click Sign In button
+  Then SK should see role as "STUDENT"
+
+
+
+
+
+
+
+
 
 
 #    @DeleteAllAssignmentsCreatedByTeacher
