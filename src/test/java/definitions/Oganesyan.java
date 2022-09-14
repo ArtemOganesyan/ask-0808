@@ -21,7 +21,8 @@ import java.sql.SQLException;
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
-public class Oganesyan {
+public class
+Oganesyan {
     private Integer userId;
     private String activationCode;
 

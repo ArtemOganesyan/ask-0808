@@ -44,4 +44,9 @@ public class konovalova {
     public void clickZKOnTheElementWithXpath(String xpath) {
         getDriver().findElement(By.xpath(xpath)).click();
     }
+
+    @And("MG click in password input field")
+    public void mgClickInPasswordInputField() {
+
+    }
 }
