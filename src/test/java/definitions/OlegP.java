@@ -34,7 +34,7 @@ public class OlegP {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
         getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
         Thread.sleep(1500);
-        getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]"));
+        getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).isDisplayed();
 
     }
 }
