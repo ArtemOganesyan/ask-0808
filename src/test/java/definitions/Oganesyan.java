@@ -12,12 +12,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import support.Helpers;
 
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
 public class Oganesyan {
+    private Integer userId;
+    private String activationCode;
 
     @Given("something")
     public void something() {
@@ -77,6 +83,71 @@ public class Oganesyan {
         Thread.sleep(1000);
         getDriver().findElement(By.xpath(XPathLibrary.questionSliderXpath)).sendKeys(Keys.ARROW_LEFT);
         Thread.sleep(10000);
+    }
+
+    @Given("OAV get activation code")
+    public void oavGetActivationCode() throws SQLException, IOException {
+        String acTok = Helpers.getAccessToken("jack@pirate.com");
+        System.out.println(acTok);
+        String[] resp = acTok.split(";");
+        int userid = Integer.valueOf(resp[0]);
+        String activationCode = resp[1];
+        Helpers.activateUser(userid, activationCode);
+    }
+
+    @Given("OAV open url {string}")
+    public void oavOpenUrl(String url) {
+        getDriver().get(url);
+    }
+
+    @Then("OAV type {string} as firstname")
+    public void oavTypeAsFirstname(String firstName) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='firstName']")).sendKeys(firstName);
+    }
+
+    @Then("OAV type {string} as lastname")
+    public void oavTypeAsLastname(String lastName) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='lastName']")).sendKeys(lastName);
+    }
+
+    @Then("OAV type {string} as email")
+    public void oavTypeAsEmail(String email) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys(email);
+    }
+
+    @Then("OAV type {string} as group code")
+    public void oavTypeAsGroupCode(String group) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='group']")).sendKeys(group);
+    }
+
+    @Then("OAV type {string} as password")
+    public void oavTypeAsPassword(String password) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys(password);
+    }
+
+    @Then("OAV type {string} as confirm password")
+    public void oavTypeAsConfirmPassword(String confirmPassword) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys(confirmPassword);
+    }
+
+    @And("OAV click on signup button")
+    public void oavClickOnSignupButton() {
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+    }
+
+    @Then("OAV get activation token for user {string}")
+    public void oavGetActivationTokenForUser(String email) throws SQLException {
+        String res = Helpers.getAccessToken(email);
+        System.out.println("The result from DB: " + res);
+        String[] val = res.split(";");
+        userId = Integer.valueOf(val[0]);
+        activationCode = val[1];
+        System.out.println("Separated values: " + val[0] + "and" + val[1]);
+    }
+
+    @And("OAV send activation request")
+    public void oavSendActivationRequest() throws IOException {
+        Helpers.activateUser(userId, activationCode);
     }
 }
 
