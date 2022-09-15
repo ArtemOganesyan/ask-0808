@@ -229,9 +229,9 @@ public class Syzonenko {
         Thread.sleep(3000);
     }
 
-    @And("SK click Go to Assessment button")
-    public void iClickGoToAssessmentButton() {
-        getDriver().findElement(By.xpath("//span[contains(text(),'Go To Assessment')]")).click();
+    @And("SK click Go to Assessment button for quiz {string}")
+    public void iClickGoToAssessmentButton(String quizName) {
+        getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]/..//button")).click();
     }
 
     @And("SK select radio button number {int} as an anwser for question number {int}")
@@ -268,30 +268,35 @@ public class Syzonenko {
     }
 
     @Then("SK delete Assigments with quiz name {string}")
-    public void iDeleteAssigmentsWithQuizName(String quizName){
-        //TODO: Doesnt delete all, StaleElement problem
+    public void iDeleteAssigmentsWithQuizName(String quizName) throws InterruptedException {
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10,200);
         List<WebElement> allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
-        WebDriverWait wait = new WebDriverWait(getDriver(), 10, 200);
-//        for (WebElement allquize : allquizes) {
-//            allquize.click();
-//            Thread.sleep(2000);
-//            getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
-//            Thread.sleep(2000);
-//            Actions actions = new Actions(getDriver());
-//            actions.sendKeys(Keys.TAB);
-//            actions.sendKeys(Keys.ENTER);
-//            actions.perform();
-//            Thread.sleep(5000);
-//        }
-       while (allquizes.size() > 0) {
-           getDriver().findElement(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon")).click();
-           wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
-           getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
-           wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]")));
-           getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")).click();
 
-       }
-
+        for (int i= 0; i<= allquizes.size(); i++)
+            try {
+                allquizes.get(i).click();
+                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
+                getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
+                Thread.sleep(2000);
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]")));
+                Actions actions = new Actions(getDriver());
+                actions.moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")));
+                actions.click();
+                actions.perform();
+                Thread.sleep(4000);
+            } catch (StaleElementReferenceException e) {
+                allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
+                allquizes.get(i).click();
+                wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
+                getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
+                Thread.sleep(2000);
+                wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[contains(text(),'Delete')]")));
+                Actions actions = new Actions(getDriver());
+                actions.moveToElement(getDriver().findElement(By.xpath("//span[contains(text(),'Delete')]")));
+                actions.click();
+                actions.perform();
+                Thread.sleep(4000);
+            }
     }
 
     @And("SK click Settings button")
@@ -346,8 +351,9 @@ public class Syzonenko {
     }
 
     @Then("SK click Sign In button")
-    public void skClickSignInButton() {
+    public void skClickSignInButton() throws InterruptedException {
         getDriver().findElement(By.xpath(logInSignInBtn)).click();
+        Thread.sleep(3000);
     }
 
     @Then("SK click I forgot my password link")
@@ -385,5 +391,17 @@ public class Syzonenko {
     @Then("SK set new password as {string}")
     public void iSetNewPasswordAs(String newPassword) throws IOException {
         resetPassword(userId, resetPasswordActivationCode, newPassword);
+    }
+
+    @Then("SK click browser Back button")
+    public void skClickBrowserBackButton() throws InterruptedException {
+        getDriver().navigate().back();
+        Thread.sleep(1500);
+    }
+
+    @Then("SK clikc 'Back to Log In' button")
+    public void skClikcBackToLogInButton() throws InterruptedException {
+        getDriver().findElement(By.xpath("//span[contains(text(),'Back to Login')]")).click();
+        Thread.sleep(1000);
     }
 }
