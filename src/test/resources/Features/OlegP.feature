@@ -25,13 +25,23 @@
   Then OP see their assigments within 2 seconds
 
   @student4
-  Scenario: My grade check
+  Scenario: My grades check
    Given OP click on "My grades"
    Then OP see their grades within 2 seconds
 
    @student5
    Scenario: Log out
     Given OP click "Log out"
+
+    @student6
+    Scenario: Sign-Up
+     Given OP start registering new student
+     Then OP fill out all fields required to register a new student
+     Then OP confirm registration email
+
+
+
+
 
 
  
