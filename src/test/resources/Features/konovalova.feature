@@ -55,9 +55,9 @@ Feature: My first feature
     Then ZK element with xpath "//a[@href ='/#/assignments']" is displayed
     When ZK click on the element with xpath "//a[@href ='/#/assign-quiz']"
     Then ZK element with xpath "//a[@href ='/#/assignments']" is displayed
-    Then ZK click on the element with xpath "//div[contains(text()), 'Zinaida Konovalova']"
+    Then ZK click on the element with xpath "//div[@class='mat-list-text' and contains (string(),'Zinaida Konovalova')]"
     Then ZK click on the element with xpath "//div[@class = 'mat-select-arrow']"
-    Then ZK click on the element with xpath "//span[contains(text()), 'test1']"
+    Then ZK click on the element with xpath "//span[contains(text(), 'test1')]"
     Then ZK element with xpath "//span[contains(text()), 'test1']" is displayed
     When ZK click on the element with xpath "//span[contains(text()), 'Give Assignment']"
     Then  ZK wait for 3 sec
