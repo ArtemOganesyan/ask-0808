@@ -15,3 +15,12 @@
       And MG click on the filter icon
       And Select group from group list
       And MG clicks on review button for Bella Keys and quiz title is Test Multi-choice Quiz
+    @test2
+    Scenario: View submission status - assignment yet to be manually graded
+      When MG click on submissons
+      And MG wait to be redirected to submissions page
+      And MG click on For Grade column
+      And MG click on the filter icon
+      And Select group from group list
+      And MG click on Grade button for Bella Keys and quiz title is Test Multi-choice Quiz
+      Then MG is redirected to the manually submitted quiz

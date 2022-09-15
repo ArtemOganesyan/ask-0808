@@ -57,10 +57,10 @@ public class gichukiM {
 
     @And("MG click on the filter icon")
     public void mgClickOnTheFilterIcon() {
-        WebElement filter = getDriver().findElement(By.xpath("//span[@class='group-label']"));
+        WebElement filter = getDriver().findElement(By.xpath("//mat-icon[contains(text(),'sort')]"));
         filter.click();
         WebDriverWait wait = new WebDriverWait(getDriver(),5);
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[@class='group-label']"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//mat-icon[contains(text(),'sort')]"))).click();
     }
 
     @And("Select group from group list")
@@ -71,5 +71,27 @@ public class gichukiM {
     @And("MG clicks on review button for Bella Keys and quiz title is Test Multi-choice Quiz")
     public void mgClicksOnReviewButtonForBellaKeysAndQuizTitleIsTestMultiChoiceQuiz() {
         getDriver().findElement(By.xpath("//tbody/tr[2]/td[7]/a[1]/button[1]")).click();
+    }
+
+    @And("MG wait to be redirected to submissions page")
+    public void mgWaitToBeRedirectedToSubmissionsPage() throws InterruptedException {
+        Thread.sleep(3000);
+    }
+
+    @And("MG click on For Grade column")
+    public void mgClickOnForGradeColumn() {
+        getDriver().findElement(By.xpath("//div[contains(text(),'For Grade')]")).click();
+
+    }
+
+    @And("MG click on Grade button for Bella Keys and quiz title is Test Multi-choice Quiz")
+    public void mgClickOnGradeButtonForBellaKeysAndQuizTitleIsTestMultiChoiceQuiz() throws InterruptedException {
+        getDriver().findElement(By.xpath("//span[contains(text(),'Grade')]")).click();
+        Thread.sleep(3000);
+    }
+
+    @Then("MG is redirected to the manually submitted quiz")
+    public void mgIsRedirectedToTheManuallySubmittedQuiz() {
+        getDriver().findElement(By.xpath("//mat-card[@class='header mat-card']")).isDisplayed();
     }
 }

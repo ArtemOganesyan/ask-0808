@@ -28,6 +28,20 @@
       And MG clicks on the sign in button
       And MG wait for 5 seconds
       Then MG text is displayed as "Authentication failed. User not found or password does not match"
+    @test5
+    Scenario: User registration
+      Given MG open site with url "http://ask-stage.portnov.com/"
+      And MG click on "Register Now" button
+      And MG type "Angel" as firstname
+      And MG type "Wells" as lastname
+      And MG type "angelwells@test.com" as email
+      And MG type group as "exp02"
+      And MG type password as "12345"
+      And MG type confirm password as "12345"
+      And MG click on "Register Me"
+      Then MG get activation code for user "angelwells@test.com"
+      And MG send activation request
+
 
 
 
