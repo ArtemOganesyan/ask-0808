@@ -225,3 +225,12 @@
       And SK log in as Teacher
       And SK click Assigments button
       Then SK delete Assigments with quiz name "Test quiz"
+
+
+    @DeleteQuizByName
+    Scenario: Delete quiz by name
+      Given SK open page "http://ask-stage.portnov.com/"
+      And SK log in as Teacher
+      And SK click Quizzes button
+      Then SK delete Quiz with name "Test quiz"
+

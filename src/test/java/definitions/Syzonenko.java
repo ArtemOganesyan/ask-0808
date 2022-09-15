@@ -22,6 +22,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static support.TestContext.getDriver;
 
@@ -35,7 +36,8 @@ public class Syzonenko {
     private Integer userId;
     private String resetPasswordActivationCode;
 
-    private static String getPasswordConfirmationCode(String userEmail) throws SQLException {
+    private static String getPasswordConfirmationCode(String userEmail) throws SQLException
+    {
         String result = "No data";
         Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
 
@@ -52,7 +54,8 @@ public class Syzonenko {
         }
         return result;
     }
-    private static void activateUser(int userId, String activationCode) throws IOException {
+    private static void activateUser(int userId, String activationCode) throws IOException
+    {
         URL url = new URL("http://ask-stage.portnov.com/api/v1/activate/" + userId + "/" + activationCode);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
@@ -75,7 +78,8 @@ public class Syzonenko {
             System.out.println("Error occurred while trying to send get request");
         }
     }
-    private static void resetPassword (int userId, String resetPasswordActivationCode, String newPassword) throws IOException {
+    private static void resetPassword (int userId, String resetPasswordActivationCode, String newPassword) throws IOException
+    {
         String inputJson = "{\"password\":" + " " + '"' + newPassword + "\"}";
         System.out.println(inputJson);
         URL url = new URL("http://ask-stage.portnov.com/api/v1/reset-password/"+userId+"/"+resetPasswordActivationCode+"");
@@ -110,23 +114,27 @@ public class Syzonenko {
 
     }
 
-    private void WaitUntillElementVisibility (String elementXpath) {
+    private void WaitUntillElementVisibility (String elementXpath)
+    {
         WebDriverWait wait = new WebDriverWait(getDriver(), 10);
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(elementXpath)));
     }
-    private void WaitUntillElementClickable (String elementXpath) {
+    private void WaitUntillElementClickable (String elementXpath)
+    {
         WebDriverWait wait = new WebDriverWait(getDriver(),10);
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath(elementXpath)));
     }
 
 
     @Given("SK open page {string}")
-    public void iOpenPage(String url) {
+    public void iOpenPage(String url)
+    {
         getDriver().get(url);
     }
 
     @And("SK log in as Teacher")
-    public void iLogInAsTeacher(){
+    public void iLogInAsTeacher()
+    {
         getDriver().findElement(By.xpath(logInEmailXpath)).sendKeys("teacher.account@gmail.com");
         getDriver().findElement(By.xpath(logInPasswordXpath)).sendKeys("Teacher");
         getDriver().findElement(By.xpath(logInSignInBtn)).click();
@@ -140,36 +148,42 @@ public class Syzonenko {
     }
 
     @And("SK click Assigments button")
-    public void iClickAssigmentsButton() throws InterruptedException {
+    public void iClickAssigmentsButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Assignments')]")).click();
         Thread.sleep(4000);
 
     }
 
     @And("SK click Create New Assignment button")
-    public void iClickCreateNewAssignmentButton() {
+    public void iClickCreateNewAssignmentButton()
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Create New Assignment')]")).click();
     }
 
     @And("SK select quiz {string} from 'Select quiz to assgin' drop-down list")
-    public void iSelectQuizFromSelectQuizToAssginDropDownList(String quizName) {
+    public void iSelectQuizFromSelectQuizToAssginDropDownList(String quizName)
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Select Quiz To Assign')]")).click();
         getDriver().findElement(By.xpath("//span[contains(text(), '"+quizName+"')]")).click();
     }
 
     @And("SK select Student from 'Students list'")
-    public void iSelectStudentFromStudentsList() {
+    public void iSelectStudentFromStudentsList()
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'TEST90')]/parent::div/preceding-sibling::mat-pseudo-checkbox")).click();
     }
 
     @And("SK click Give Assignment button")
-    public void iClickGiveAssignmentButton() throws InterruptedException {
+    public void iClickGiveAssignmentButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Give Assignment')]")).click();
         Thread.sleep(4000);
     }
 
     @Then("SK should see quiz {string} assignment details on Assignments page")
-    public void iShouldSeeQuizAssignmentDetailsOnAssignmentsPage(String quizName) {
+    public void iShouldSeeQuizAssignmentDetailsOnAssignmentsPage(String quizName)
+    {
         String actual = getDriver().findElement(By.xpath("//mat-expansion-panel[1]/mat-expansion-panel-header/span/mat-panel-title[3]")).getText().substring(6);
         String dateDetails = getDriver().findElement(By.xpath("//mat-expansion-panel[1]/mat-expansion-panel-header/span/mat-panel-title[1]")).getText().substring(17);
         Date date = new Date();
@@ -180,32 +194,37 @@ public class Syzonenko {
     }
 
     @And("SK select group code {string} from Group filter drop-down list")
-    public void iSelectGroupCodeFromGroupFilterDropDownList(String groupCode){
+    public void iSelectGroupCodeFromGroupFilterDropDownList(String groupCode)
+    {
         getDriver().findElement(By.xpath("//mat-select[1]/div[1]/div[2]")).click();
         WaitUntillElementVisibility("//span[contains(text(),'"+groupCode+"')]/parent::mat-option");
         getDriver().findElement(By.xpath("//span[contains(text(),'"+groupCode+"')]/parent::mat-option")).click();
     }
 
     @And("SK click 'Select All' button")
-    public void iClickSelectAllButton() {
+    public void iClickSelectAllButton()
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Select All')]")).click();
     }
 
     @Then("SK should see 'Select at least one Student' error message")
-    public void iShouldSeeSelectAtLeastOneStudentErrorMessage() {
+    public void iShouldSeeSelectAtLeastOneStudentErrorMessage()
+    {
         new WebDriverWait(getDriver(), 10, 200).until(ExpectedConditions.presenceOfElementLocated(By.xpath("//mat-error[contains(text(),'Select at least one Student')]")));
         String errormsg = getDriver().findElement(By.xpath("//mat-error[contains(text(),'Select at least one Student')]")).getText();
         Assert.assertEquals(errormsg, "Select at least one Student");
     }
 
     @Then("SK should see 'This field is required' error message")
-    public void iShouldSeeThisFieldIsRequiredErrorMessage() {
+    public void iShouldSeeThisFieldIsRequiredErrorMessage()
+    {
         String errormsg = getDriver().findElement(By.xpath("//mat-error[contains(text(),'This field is required')]")).getText();
         Assert.assertEquals(errormsg, "This field is required");
     }
 
     @And("SK log out from current account")
-    public void iLogOutFromCurrentAccount() throws InterruptedException {
+    public void iLogOutFromCurrentAccount() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
         Thread.sleep(2000);
         Actions actions = new Actions(getDriver());
@@ -216,7 +235,8 @@ public class Syzonenko {
     }
 
     @And("SK log in as Student")
-    public void iLogInAsStudent() throws InterruptedException {
+    public void iLogInAsStudent() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//input[@formcontrolname=\"email\"]")).sendKeys("student.account@gmail.com");
         getDriver().findElement(By.xpath("//input[@type=\"password\"]")).sendKeys("Student");
         getDriver().findElement(By.xpath("//span[contains(text(),'Sign In')]")).click();
@@ -224,7 +244,8 @@ public class Syzonenko {
     }
 
     @And("SK click My Assigments button")
-    public void iClickMyAssigmentsButton() throws InterruptedException {
+    public void iClickMyAssigmentsButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'My Assignments')]")).click();
         Thread.sleep(3000);
     }
@@ -235,17 +256,20 @@ public class Syzonenko {
     }
 
     @And("SK select radio button number {int} as an anwser for question number {int}")
-    public void iSelectRadioButtonNumberAsAnAnwserForQuestionNumber(int optionNumber, int questionNumber) {
+    public void iSelectRadioButtonNumberAsAnAnwserForQuestionNumber(int optionNumber, int questionNumber)
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Question "+questionNumber+"')]/ancestor::mat-card//div/mat-radio-group/mat-radio-button["+optionNumber+"]/label/div/div[2]")).click();
     }
 
     @And("SK select check-box number {int} as an anwser for question number {int}")
-    public void iSelectCheckBoxNumberAsAnAnwserForQuestionNumber(int optionNumber, int questionNumber) {
+    public void iSelectCheckBoxNumberAsAnAnwserForQuestionNumber(int optionNumber, int questionNumber)
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Question "+questionNumber+"')]/ancestor::mat-card//mat-checkbox["+optionNumber+"]/label/div")).click();
     }
 
     @And("SK click Submit my Answer button")
-    public void iClickSubmitMyAnswerButton() throws InterruptedException {
+    public void iClickSubmitMyAnswerButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Submit My Answers')]")).click();
         Thread.sleep(3000);
         Actions actions = new Actions(getDriver());
@@ -254,12 +278,14 @@ public class Syzonenko {
     }
 
     @When("SK click My Grades button")
-    public void iClickMyGradesButton() {
+    public void iClickMyGradesButton()
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'My Grades')]")).click();
     }
 
     @Then("SK should see quiz {string} with Status: {string}")
-    public void iShouldSeeQuizWithStatus(String quizName, String status) {
+    public void iShouldSeeQuizWithStatus(String quizName, String status)
+    {
         String actualStatus = getDriver().findElement(By.xpath(
                 "//td[contains(text(),'"+quizName+"')]/following-sibling::td/span")).getText();
         String actualQuizName = getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]")).getText();
@@ -267,8 +293,10 @@ public class Syzonenko {
         Assert.assertEquals(actualStatus, status);
     }
 
+    @SuppressWarnings("BusyWait")
     @Then("SK delete Assigments with quiz name {string}")
-    public void iDeleteAssigmentsWithQuizName(String quizName) throws InterruptedException {
+    public void iDeleteAssigmentsWithQuizName(String quizName) throws InterruptedException
+    {
         WebDriverWait wait = new WebDriverWait(getDriver(), 10,200);
         List<WebElement> allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
 
@@ -300,39 +328,46 @@ public class Syzonenko {
     }
 
     @And("SK click Settings button")
-    public void skClickSettingsButton() throws InterruptedException {
+    public void skClickSettingsButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Settings')]")).click();
         Thread.sleep(1000);
     }
 
     @And("SK click Change Your Password")
-    public void skClickChangeYourPassword() throws InterruptedException {
+    public void skClickChangeYourPassword() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Change Your Password')]")).click();
         Thread.sleep(2000);
     }
 
     @Then("SK type {string} in current Password field")
-    public void skTypeInCurrentPasswordField(String oldPassword) {
+    public void skTypeInCurrentPasswordField(String oldPassword)
+    {
         getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys(oldPassword);
     }
 
     @Then("SK type {string} in New Password field")
-    public void skTypeInNewPasswordField(String newPassword) {
+    public void skTypeInNewPasswordField(String newPassword)
+    {
         getDriver().findElement(By.xpath("//input[@formcontrolname='newPassword']")).sendKeys(newPassword);
     }
 
     @Then("SK type {string} in Confirm New Password")
-    public void skTypeInConfirmNewPassword(String confirmPassword) {
+    public void skTypeInConfirmNewPassword(String confirmPassword)
+    {
         getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys(confirmPassword);
     }
 
     @Then("SK click Change button")
-    public void skClickChangeButton() {
+    public void skClickChangeButton()
+    {
         getDriver().findElement(By.xpath("//button[@aria-label]//span[contains(text(),'Change')]")).click();
     }
 
     @Then("SK get password reset token")
-    public void skGetPasswordResetToken() throws SQLException {
+    public void skGetPasswordResetToken() throws SQLException
+    {
         String passwordConfirmationCode = getPasswordConfirmationCode("student.account@gmail.com");
         String[] values = passwordConfirmationCode.split(";");
         String id = values[0];
@@ -341,45 +376,53 @@ public class Syzonenko {
     }
 
     @Then("SK type {string} in email field")
-    public void skTypeInEmailField(String email) {
+    public void skTypeInEmailField(String email)
+    {
         getDriver().findElement(By.xpath(logInEmailXpath)).sendKeys(email);
     }
 
     @Then("SK type {string} in password field")
-    public void skTypeInPasswordField(String password) {
+    public void skTypeInPasswordField(String password)
+    {
         getDriver().findElement(By.xpath(logInPasswordXpath)).sendKeys(password);
     }
 
     @Then("SK click Sign In button")
-    public void skClickSignInButton() throws InterruptedException {
+    public void skClickSignInButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath(logInSignInBtn)).click();
         Thread.sleep(3000);
     }
 
     @Then("SK click I forgot my password link")
-    public void iClickIForgotMyPasswordLink() {
+    public void iClickIForgotMyPasswordLink()
+    {
         getDriver().findElement(By.xpath("//a[contains(text(),'I forgot my password')]")).click();
     }
 
     @Then("SK type {string} into Reset password email field")
-    public void iTypeIntoResetPasswordEmailField(String email) {
+    public void iTypeIntoResetPasswordEmailField(String email)
+    {
         getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys(email);
     }
 
     @Then("SK click Request Password Reset button")
-    public void iClickRequestPasswordResetButton() throws InterruptedException {
+    public void iClickRequestPasswordResetButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Request Password Reset')]")).click();
         Thread.sleep(3000);
     }
 
     @Then("SK should see 'Your request is confirmd' message")
-    public void iShouldSeeYourRequestIsConfirmdMessage() {
+    public void iShouldSeeYourRequestIsConfirmdMessage()
+    {
         String confirmMsg = getDriver().findElement(By.xpath("//h4[contains(text(),'Your request is confirmed')]")).getText();
         Assert.assertEquals(confirmMsg, "Your request is confirmed");
     }
 
     @And("SK get Reset Password activation code for user with email {string}")
-    public void iGetResetPasswordActivationCodeForUserWithEmail(String email) throws SQLException {
+    public void iGetResetPasswordActivationCodeForUserWithEmail(String email) throws SQLException
+    {
         String response = getPasswordConfirmationCode(email);
         String[] values = response.split(";");
         userId = Integer.parseInt(values[0]);
@@ -389,19 +432,70 @@ public class Syzonenko {
     }
 
     @Then("SK set new password as {string}")
-    public void iSetNewPasswordAs(String newPassword) throws IOException {
+    public void iSetNewPasswordAs(String newPassword) throws IOException
+    {
         resetPassword(userId, resetPasswordActivationCode, newPassword);
     }
 
     @Then("SK click browser Back button")
-    public void skClickBrowserBackButton() throws InterruptedException {
+    public void skClickBrowserBackButton() throws InterruptedException
+    {
         getDriver().navigate().back();
         Thread.sleep(1500);
     }
 
     @Then("SK clikc 'Back to Log In' button")
-    public void skClikcBackToLogInButton() throws InterruptedException {
+    public void skClikcBackToLogInButton() throws InterruptedException
+    {
         getDriver().findElement(By.xpath("//span[contains(text(),'Back to Login')]")).click();
         Thread.sleep(1000);
+    }
+
+    @And("SK click Quizzes button")
+    public void skClickQuizzesButton()
+    {
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Quizzes')]")).click();
+        WaitUntillElementClickable("//span[contains(text(),'Create New Quiz')]");
+        WaitUntillElementVisibility("//span[contains(text(),'Create New Quiz')]");
+    }
+
+    @SuppressWarnings("BusyWait")
+    @Then("SK delete Quiz with name {string}")
+    public void skDeleteQuizWithName(String quizName) throws InterruptedException
+    {
+        WebElement quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+        WebElement deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
+        List<WebElement> quizzes = getDriver().findElements(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+        Actions actions = new Actions(getDriver());
+        do {
+            try {
+                quize.click();
+                Thread.sleep(3000);
+                deleteBtn.click();
+                Thread.sleep(2000);
+                WebElement closeDialog = getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]"));
+                actions.moveToElement(closeDialog);
+                actions.click();
+                actions.perform();
+                Thread.sleep(3000);
+            }
+            catch (StaleElementReferenceException e) {
+                quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+                quize.click();
+                Thread.sleep(3000);
+                deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
+                deleteBtn.click();
+                Thread.sleep(2000);
+                WebElement closeDialog = getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]"));
+                actions.moveToElement(closeDialog);
+                actions.click();
+                actions.perform();
+                Thread.sleep(3000);
+            }
+            catch (NoSuchElementException el) {
+                System.out.println("No more quizzes with name " + quizName);
+            }
+        }
+        while (quizzes.size() > 0);
     }
 }
