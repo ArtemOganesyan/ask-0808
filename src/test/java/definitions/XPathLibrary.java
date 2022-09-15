@@ -16,5 +16,5 @@ public class XPathLibrary {
     public static String addQuestionBtnXpath = "//div/button/span/mat-icon";
     public static String textualQselXpath = "//mat-panel-title[contains(text(), 'Q1')]/../../..//*[contains(text(), 'Textual')]";
     public static String questionSliderXpath = "//mat-panel-title[contains(text(), 'Q1')]/../../..//mat-slider";
-    //This string is added by Artem
+
 }

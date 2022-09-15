@@ -1,15 +1,47 @@
 @homework
 Feature: Student - my grades
 
+<<<<<<< HEAD
   Background: Student log in
+=======
+  Background: Teacher log in
+>>>>>>> main
     Given AM open Ask page
-    Then AM type "extreme66@cbarata.pro" into email field
-    And AM type "12345" into password field
+    Then AM type "annya.manukyan@gmail.com" into email field
+    And AM type "Joseph1" into password field
     Then AM click SignIn button
-    And AM wait 3 sec when all elements load
+    And AM wait 5 sec when all elements load
+
+#  Background: Student log in
+#    Given AM open Ask page
+#    Then AM type "extreme66@cbarata.pro" into email field
+#    And AM type "12345" into password field
+#    Then AM click SignIn button
+#    And AM wait 3 sec when all elements load
 
 
 
+<<<<<<< HEAD
+=======
+  @test1
+#    use Background with Teacher log in
+  Scenario: Pending Review means Teacher has to grade the Quiz
+    And AM goes to Assignments
+    Then AM click on Create New Assignment
+    And AM choose student Anna Manukyan from list of students
+    Then AM select quiz from dropdown menu with name Unique Quiz
+    And AM create assignment
+    Then AM Log out
+    And AM Log in as Student
+    And AM go to My Assignments
+    And AM choose last assigned quiz
+    And AM type "Anna" for textual question
+    And AM answer single choice question
+    And AM answer multiply choice question
+    And AM Submit my answers
+    And AM go to My Grades
+    Then AM verify that assignment status is "PENDING"
+>>>>>>> main
 
 
 
