@@ -1,5 +1,5 @@
 @feature1
-Feature: My first feature
+Feature: The game
 
   @scenario1
   Scenario: Password validation
@@ -45,7 +45,7 @@ Feature: My first feature
     Then ZK element with xpath "//input[@id='mat-input-1']" is displayed
 
   @scenario6
-  Scenario: Password validation
+  Scenario: Create assignment
     Given ZK open url "http://ask-stage.portnov.com/"
     When ZK type "zkonovalova@ya.ru" into element with xpath "//input[@formcontrolname='email']"
     Then type ZK "teacher" into element with xpath "//input[@formcontrolname='password']"
