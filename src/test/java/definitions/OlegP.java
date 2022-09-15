@@ -1,12 +1,26 @@
 package definitions;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static support.TestContext.getDriver;
 
 public class OlegP {
+
+    private static String emailXpath="//input[@formcontrolname='email']";
+    private static String passXpath="//input[@formcontrolname='password']";
+    private static String signinBtnXpath="//span[contains(text(),'Sign In')]";
+    private static String studentLoggedIn="//p[contains(text(),'STUDENT')]";
+    private static String myAssigmentsXpath="//h5[contains(text(),'My Assignments')]";
+    private static String myGradesXpath="//h5[contains(text(),'My Grades')]";
+
+
     @Given("OP navigate to home page")
     public void opNavigateToHomePage() {
         getDriver().navigate().to("http://ask-stage.portnov.com/");
@@ -36,5 +50,64 @@ public class OlegP {
         Thread.sleep(1500);
         getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).isDisplayed();
 
+    }
+
+
+    @Given("OP navigate to login page {string}")
+    public void opNavigateToLoginPage(String url) {
+        getDriver().get(url);
+    }
+
+    @Then("OP enter email {string}")
+    public void opEnterEmail(String email) {
+        getDriver().findElement(By.xpath(emailXpath)).sendKeys(email);
+    }
+
+    @Then("OP enter password {string}")
+    public void opEnterPassword(String password) {
+        getDriver().findElement(By.xpath(passXpath)).sendKeys(password);
+    }
+
+
+    @Then("OP click Sign-in button")
+    public void opClickSignInButton() {
+        getDriver().findElement(By.xpath(signinBtnXpath)).click();
+    }
+
+    @And("OP wait for {int} seconds")
+    public void opWaitForSeconds(int timeout) throws InterruptedException {
+        WebDriverWait wait= new WebDriverWait(getDriver(), timeout);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(studentLoggedIn)));
+
+    }
+
+    @Given("OP click {string} button")
+    public void opClickButton (String myAssigments) throws InterruptedException {
+        getDriver().findElement(By.xpath(myAssigmentsXpath)).click();
+    }
+
+    @Then("OP see their assigments within {int} seconds")
+    public void opSeeTheirAssigmentsWithinSeconds(int timeout) throws InterruptedException {
+        WebDriverWait wait= new WebDriverWait(getDriver(), timeout);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h5[contains(text(),'My Assignments')]")));
+    }
+
+    @Given("OP click on {string}")
+    public void opClickOn(String arg0) {
+        getDriver().findElement(By.xpath(myGradesXpath)).click();
+    }
+
+    @Then("OP see their grades within {int} seconds")
+    public void opSeeTheirGradesWithinSeconds(int timeout) throws InterruptedException {
+        WebDriverWait wait= new WebDriverWait(getDriver(), timeout);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h4[contains(text(),'My Grades')]")));
+    }
+
+    @Given("OP click {string}")
+    public void opClick(String arg0) throws InterruptedException {
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
+        Thread.sleep(1500);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).isDisplayed();
     }
 }
