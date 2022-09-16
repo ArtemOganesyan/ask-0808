@@ -17,7 +17,7 @@ public class prasad {
     }
 
     @Given("MAP open url {string}")
-    public void mapOpenUrl(String arg0) {
+    public void mapOpenUrl(String url) {
         getDriver().get("http://ask-stage.portnov.com");
         
     }
@@ -66,12 +66,31 @@ public class prasad {
 
     @Then("MAP get registered message")
     public void mapGetRegisteredMessage() {
-        getDriver().findElement(By.xpath("//h4[contains(text(),'You have been Registered.')]")).isDisplayed();
+        assertThatgetDriver().findElement(By.xpath("//h4[contains(text(),'You have been Registered.')]")).isDisplayed()isTrue;
 
     }
 
     @And("MAP type {string} as Confirm Password field")
     public void mapTypeAsConfirmPasswordField(String confirmPassword) {
         getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys(confirmPassword);
+    }
+
+    @Then("MAP get error message")
+    public void mapGetErrorMessage() {
+        assertThat(getDriver().findElement(By.xpath("//mat-error[contains(text(),'This field is required')]")).isDisplayed());
+
+
+    }
+
+    @Then("MAP did not get registered message")
+    public void mapDidNotGetRegisteredMessage() {
+        assertThat(getDriver().findElement(By.xpath("//h4[contains(text(),'You have been Registered.')]")).isDisplayed()).isFalse;
+
+    }
+
+    @Then("MAP get error message for mismatch of password")
+    public void mapGetErrorMessageForMismatchOfPassword() {
+        assertThat(getDriver().findElement(By.xpath("//mat-error[contains(text(),'This field is required')]")).isDisplayed());
+
     }
 }
