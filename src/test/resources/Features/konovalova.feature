@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+@feature1
+Feature: The game
+=======
 #@feature1
 #Feature: My first feature
 #
@@ -64,6 +68,7 @@
 #    And ZK element with xpath "//h4[contains(text()),'List of Assignments]" is displayed
 #    And ZK element with xpath "//span(contains(text()),'test1'" is displayed
 #    And click ZK on the element with xpath "//h5[contains(text(), 'Log Out')]"
+>>>>>>> main
 
   @scenario1
   Scenario: Password validation
@@ -109,7 +114,7 @@
     Then ZK element with xpath "//input[@id='mat-input-1']" is displayed
 
   @scenario6
-  Scenario: Password validation
+  Scenario: Create assignment
     Given ZK open url "http://ask-stage.portnov.com/"
     When ZK type "zkonovalova@ya.ru" into element with xpath "//input[@formcontrolname='email']"
     Then type ZK "teacher" into element with xpath "//input[@formcontrolname='password']"
