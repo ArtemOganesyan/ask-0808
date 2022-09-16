@@ -8,6 +8,6 @@ import static support.TestContext.getDriver;
 public class kryvoruchko {
 
     @Given("I open page {string}")
-    public void iOpenPage(String arg0) {
+    public void iOpenPage(String url) {getDriver().get(amLibrary.url);
     }
 }
