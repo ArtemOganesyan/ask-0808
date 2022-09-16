@@ -85,13 +85,13 @@ public class prasad {
 
     @Then("MAP did not get registered message")
     public void mapDidNotGetRegisteredMessage() {
-        //assertThat(getDriver().findElement(By.xpath("//h4[contains(text(),'You have been Registered.')]")).isDisplayed()).isFalse;
+      assertThat(getDriver().findElement(By.xpath("//h4[contains(text(),'You have been Registered.')]")).isDisplayed()).isFalse;
 
     }
 
     @Then("MAP get error message for mismatch of password")
     public void mapGetErrorMessageForMismatchOfPassword() {
-        assertThat(getDriver().findElement(By.xpath("//mat-error[contains(text(),'This field is required')]")).isDisplayed());
+        //assertThat(getDriver().findElement(By.xpath("//mat-error[contains(text(),'This field is required')]")).isDisplayed());
 
     }
 }

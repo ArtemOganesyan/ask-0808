@@ -1,4 +1,6 @@
-   @feature278:
+
+
+  @feature278:
    Feature: Registration First Name
      @Scenario279
     Scenario: To verify that Alphanumeric and special characters are allowed in First Name
@@ -50,7 +52,6 @@
        And MAP type "12345bc" as Confirm Password field
        Then MAP click on Register Me button
        Then MAP get error message for mismatch of password
-
 
 
 
