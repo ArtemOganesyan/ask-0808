@@ -54,6 +54,7 @@
 
 
 
+
      @feature2:
      Feature: To verify STUDENT and TEACHER role
      @Scenario1
