@@ -3,11 +3,15 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
@@ -17,20 +21,6 @@ public class manukyanHw {
 
 
 
-//    @And("I press on element with xpath {string}")
-//    public boolean iPressOnElementWithXpathString(String xpath) {
-//        boolean result = false;
-//        int attempts = 0;
-//        while (attempts<2) {try {
-//            getDriver().findElement(By.xpath(xpath)).click();
-//            result = true;
-//            break;
-//        } catch (StaleElementReferenceException e) {
-//
-//        }
-//        attempts++;
-//        }
-//        return result;
 
 
 
@@ -66,7 +56,7 @@ public class manukyanHw {
     @And("AM goes to Assignments")
     public void amGoesToAssignments() throws InterruptedException {
         getDriver().findElement(By.xpath(amLibrary.assignmentsMenuXP)).click();
-        Thread.sleep(3000);
+        Thread.sleep(4000);
     }
 
     @Then("AM click on Create New Assignment")
@@ -165,22 +155,28 @@ public class manukyanHw {
 
     @Then("My Grades page is displayed")
     public void myGradesPageIsDisplayed() {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.myGradesPageXP)).isDisplayed()).isTrue();
+        assertThat(getDriver().findElement(By.xpath(amLibrary.myGradesPageXP)).isDisplayed());
     }
 
     @Then("AM see number of graded assignments in Grades statistics")
-    public void amSeeNumberOfGradedAssignmentsInGradesStatistics() {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.gradedAssignmentsHPXP)).isDisplayed()).isTrue();
+    public void amSeeNumberOfGradedAssignmentsInGradesStatistics() throws InterruptedException{
+        assertThat(getDriver().findElement(By.xpath(amLibrary.gradedAssignmentsHPXP)).isDisplayed());
+        Thread.sleep(2000);
+        String number = getDriver().findElement(By.xpath("//p[contains (text(),'There are')]/span[1]")).getText();
+        assertThat(number).containsOnlyDigits();
     }
 
     @Then("AM see number of assignments that need to be reviewed by teacher in Grades statistic")
-    public void amSeeNumberOfAssignmentsThatNeedToBeReviewedByTeacherInGradesStatistic() {
-        assertThat(getDriver().findElement(By.xpath("//p[contains (.,'but was(re) not reviewed by teacher yet.')]/span[@class='bold'][2]")).isDisplayed()).isTrue();
+    public void amSeeNumberOfAssignmentsThatNeedToBeReviewedByTeacherInGradesStatistic() throws InterruptedException {
+        assertThat(getDriver().findElement(By.xpath("//p[contains (.,'but was(re) not reviewed by teacher yet.')]/span[@class='bold'][2]")).isDisplayed());
+        Thread.sleep(2000);
+        String number = getDriver().findElement(By.xpath("//p[contains (text(),'There are')]/span[2]")).getText();
+        assertThat(number).containsOnlyDigits();
     }
 
     @Then("AM see column named Submitted At")
     public void amSeeColumnNamedSubmittedAt() throws InterruptedException {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.submittedAtMyGradesXP)).isDisplayed()).isTrue();
+        assertThat(getDriver().findElement(By.xpath(amLibrary.submittedAtMyGradesXP)).isDisplayed());
         Thread.sleep(3000);
     }
 
@@ -193,7 +189,7 @@ public class manukyanHw {
 
     @Then("AM see column named Graded At")
     public void amSeeColumnNamedGradedAt() {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.gradedAtMyGradesXP)).isDisplayed()).isTrue();
+        assertThat(getDriver().findElement(By.xpath(amLibrary.gradedAtMyGradesXP)).isDisplayed());
     }
 
     @Then("AM verify that Graded at is {string}")
@@ -204,14 +200,82 @@ public class manukyanHw {
 
     @And("AM see column Quiz with quizzes names")
     public void amSeeColumnQuizWithQuizzesNames() {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.quizMygradesXP)).isDisplayed()).isTrue();
+        assertThat(getDriver().findElement(By.xpath(amLibrary.quizMygradesXP)).isDisplayed());
+        List<WebElement> quizNames = getDriver().findElements(By.xpath("//td[@class='quiz-name']"));
+        for (WebElement quizName : quizNames) {
+            assertThat(quizName.getText()).isNotEmpty();
+        }
     }
 
     @And("AM see column Status")
     public void amSeeColumnStatus() {
-        assertThat(getDriver().findElement(By.xpath(amLibrary.statusMygradesXP)).isDisplayed()).isTrue();
-        String status = getDriver().findElement(By.xpath("//tr[@class='ng-star-inserted'][1]/td[4]")).getText();
-        assertThat(status).isEqualToIgnoringCase("passed");
+        assertThat(getDriver().findElement(By.xpath(amLibrary.statusMygradesXP)).isDisplayed());
+        List<WebElement> statuses = getDriver().findElements(By.xpath("//td[4]/span"));
+        for (WebElement status : statuses)
+        assertThat(status.getText()).isIn("PASSED", "PENDING", "FAILED");
+    }
+
+    @And("AM see column Score")
+    public void amSeeColumnScore() {
+        assertThat(getDriver().findElement(By.xpath(amLibrary.scoreMygradesXP)).isDisplayed());
+    }
+
+
+    @And("AM see {string} button next to Passed quiz")
+    public void amSeeButtonNextToPassedQuiz(String details) {
+        assertThat(getDriver().findElement(By.xpath("//tr/td[4]/span[contains(text(),'PASSED')]/../../td[6]//button")).isDisplayed());
+        String button = getDriver().findElement(By.xpath("//td[6]//span")).getText();
+        assertThat(button).isEqualTo(details);
+    }
+
+
+    @And("Score is listed if Status is PASSED or FAILED")
+    public void scoreIsListedIfStatusIsPASSEDOrFAILED() {
+        String scoreP = getDriver().findElement(By.xpath("//td[4]/span[contains(text(),'PASSED')]/../../td[contains(text(),'of')]")).getText();
+        assertThat(scoreP).contains("of");
+        String scoreF = getDriver().findElement(By.xpath("//td[4]/span[contains(text(),'FAILED')]/../../td[contains(text(),'of')]")).getText();
+        assertThat(scoreF).contains("of");
+    }
+
+    @Then("AM see {string} button next to Failed quiz")
+    public void amSeeButtonNextToFailedQuiz(String details) {
+        assertThat(getDriver().findElement(By.xpath("//tr/td[4]/span[contains(text(),'FAILED')]/../../td[6]//button")).isDisplayed());
+        String button = getDriver().findElement(By.xpath("//td[6]//span")).getText();
+        assertThat(button).isEqualTo(details);
+
+
+    }
+
+    @Then("Am do not see {string} button next to Pending quiz")
+    public void amDoNotSeeButtonNextToPendingQuiz(String details) {
+        List<WebElement> button = getDriver().findElements(By.xpath("//tr/td[4]/span[contains(text(),'PENDING')]/../../td[6]//button"));
+        assertThat(button).isEmpty();
+            }
+
+    @When("AM click Details button")
+    public void amClickDetailsButton() {
+        getDriver().findElement(By.xpath("//tr[2]//td[6]//button")).click();
+    }
+
+    @Then("AM see Grades details page")
+    public void amSeeGradesDetailsPage() {
+        assertThat(getDriver().findElement(By.xpath("//ac-grade-details-page")).isDisplayed()).isTrue();
+    }
+
+    @And("AM can see points earned")
+    public void amCanSeePointsEarned() throws InterruptedException {
+
+        List<WebElement> points = getDriver().findElements(By.xpath("//td/span"));
+        Thread.sleep(2000);
+        for (WebElement point : points)
+            assertThat(point.getText()).contains("+");
+                }
+
+
+
+    @And("AM can see answers")
+    public void amCanSeeAnswers() {
+        assertThat(getDriver().findElement(By.xpath("//div[contains(text(),'Answer')]")).isDisplayed());
     }
 }
 
