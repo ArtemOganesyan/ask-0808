@@ -1,14 +1,14 @@
 @predefine:
 Feature: Internship ask-portnov feature
- // @ask-portnov-student
- //Scenario: login as Student
-  //  Given SS go to the "http://ask-stage.portnov.com" page
-   // Then SS type "htmljason02@gmail.com" into email field
-   // And SS enter "Banana01" as password
-   // Then SS click SignIn button
-  //  And SS wait for 6 sec
+  @ask-portnov-student
+ Scenario: login as Student
+   Given SS go to the "http://ask-stage.portnov.com" page
+   Then SS type "htmljason02@gmail.com" into email field
+   And SS enter "Banana01" as password
+    Then SS click SignIn button
+    And SS wait for 6 sec
 
-  @ask_portnov-Teacher
+ # @ask_portnov-Teacher
     Scenario: Login as Teacher
     Given SS go to the "http://ask-stage.portnov.com" page
     Then SS type "sawantsandhya.ni@gmail.com" into email field
@@ -33,5 +33,13 @@ Feature: Internship ask-portnov feature
     Given SS get activation code
  @ask5
  Scenario: User registration
-   Given SS open url ""
-
+   Given SS open url "http://ask-stage.portnov.com/#/registration"
+   Then SS type "San" as firstname
+   Then SS type "Saw" as lastname
+   Then SS type "sawantsandhya.ni@gmail.com" as email
+   Then SS type "s001" as group code
+   Then SS type "12345" as password
+   Then SS type "12345" as confirm password
+   And SS click on signup button
+   Then SS get activation token for user "sawantsandhya.ni@gmail.com"
+   And SS send activation request
