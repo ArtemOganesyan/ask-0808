@@ -22,7 +22,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.NoSuchElementException;
+
 
 import static support.TestContext.getDriver;
 
@@ -300,9 +300,10 @@ public class Syzonenko {
         WebDriverWait wait = new WebDriverWait(getDriver(), 10,200);
         List<WebElement> allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
 
-        for (int i= 0; i<= allquizes.size(); i++)
+        for (int i= 0; i < allquizes.size(); i++)
             try {
-                allquizes.get(i).click();
+                WebElement quiz = getDriver().findElement(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
+                quiz.click();
                 wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
                 getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
                 Thread.sleep(2000);
@@ -313,8 +314,8 @@ public class Syzonenko {
                 actions.perform();
                 Thread.sleep(4000);
             } catch (StaleElementReferenceException e) {
-                allquizes = getDriver().findElements(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
-                allquizes.get(i).click();
+                WebElement quiz = getDriver().findElement(By.xpath("//span[contains(text(),'"+quizName+"')]/ancestor::mat-panel-title/following-sibling::mat-panel-title/button/span/mat-icon"));
+                quiz.click();
                 wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Delete Assignment')]")));
                 getDriver().findElement(By.xpath("//span[contains(text(),'Delete Assignment')]")).click();
                 Thread.sleep(2000);
@@ -325,6 +326,7 @@ public class Syzonenko {
                 actions.perform();
                 Thread.sleep(4000);
             }
+        System.out.println(allquizes.size() + "assigments with quiz name:" + " " + quizName + " " + "was deleted");
     }
 
     @And("SK click Settings button")
@@ -463,14 +465,15 @@ public class Syzonenko {
     @Then("SK delete Quiz with name {string}")
     public void skDeleteQuizWithName(String quizName) throws InterruptedException
     {
-        WebElement quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
-        WebElement deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
+
         List<WebElement> quizzes = getDriver().findElements(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
         Actions actions = new Actions(getDriver());
-        do {
+        for (int i=0; i<  quizzes.size(); i++){
             try {
+                WebElement quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
                 quize.click();
                 Thread.sleep(3000);
+                WebElement deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
                 deleteBtn.click();
                 Thread.sleep(2000);
                 WebElement closeDialog = getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]"));
@@ -480,10 +483,10 @@ public class Syzonenko {
                 Thread.sleep(3000);
             }
             catch (StaleElementReferenceException e) {
-                quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+                WebElement quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
                 quize.click();
                 Thread.sleep(3000);
-                deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
+                WebElement deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
                 deleteBtn.click();
                 Thread.sleep(2000);
                 WebElement closeDialog = getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]"));
@@ -492,10 +495,126 @@ public class Syzonenko {
                 actions.perform();
                 Thread.sleep(3000);
             }
-            catch (NoSuchElementException el) {
-                System.out.println("No more quizzes with name " + quizName);
-            }
         }
-        while (quizzes.size() > 0);
+        System.out.println(quizzes.size() + " " + "quizzes was deleted with name:" + " " + quizName);
+    }
+
+    @And("SK click 'Create New Quiz' button")
+    public void skClickCreateNewQuizButton()
+    {
+        WaitUntillElementVisibility("//span[contains(text(),'Create New Quiz')]");
+        getDriver().findElement(By.xpath("//span[contains(text(),'Create New Quiz')]")).click();
+    }
+
+    @And("SK type {string} in 'Title Of The Quiz' field")
+    public void skTypeInTitleOfTheQuizField(String quizName)
+    {
+        WaitUntillElementVisibility("//input[@formcontrolname='name']");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='name']")).sendKeys(quizName);
+    }
+
+    @And("SK click 'Add Question' button {int} times")
+    public void skClickAddQuestionButtonTimes(Integer numberOfQuestions)
+    {
+        WaitUntillElementVisibility("//mat-icon[contains(text(),'add_circle')]");
+        WebElement addQuestionBtn = getDriver().findElement(By.xpath("//mat-icon[contains(text(),'add_circle')]"));
+        int i=0;
+        while (i<numberOfQuestions){
+            addQuestionBtn.click();
+            i++;
+        }
+    }
+
+    @And("SK select Question Type {string} for question number {int}")
+    public void skSelectQuestionTypeForQuestionNumber(String questionType, int questionNumber)
+    {
+        WaitUntillElementVisibility("//mat-panel-title[contains(text(),'Q1: new empty question')]");
+        switch (questionType){
+            case "Textual": getDriver().findElement(
+                    By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//mat-radio-group//div[contains(text(),'"+questionType+"')]/../div/div[2]")).click();
+            case "Single-Choice": getDriver().findElement(
+                    By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//mat-radio-group//div[contains(text(),'"+questionType+"')]/../div/div[2]")).click();
+            case "Multiple-Choice": getDriver().findElement(
+                    By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//mat-radio-group//div[contains(text(),'"+questionType+"')]/../div/div[2]")).click();
+        }
+    }
+
+    @And("SK type {string} for textual Question name field for question number {int}")
+    public void skTypeInQuestionNameFieldForQuestionNumber(String questionName, int questionNumber)
+    {
+        WaitUntillElementVisibility(" //mat-panel-title[contains(text(),'Q1: new empty question')]/../../..//textarea");
+        getDriver().findElement(By.xpath(" //mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//textarea")).sendKeys(questionName);
+    }
+
+    @And("SK set points to {int} for question number {int}")
+    public void skSetPointsToForQuestionNumber(int points, int questionNumber)
+    {
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getDriver().findElement(By.xpath(" //mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//div[@class='mat-slider-thumb']")));
+        String existingpointsText = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//h2")).getText();
+        int existingPoints = Integer.parseInt(existingpointsText);
+        actions.click();
+        actions.perform();
+
+        int i = 0;
+        if (points < 5){
+            while (i < (existingPoints - points)){
+                actions.moveToElement(getDriver().findElement(By.xpath(" //mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//div[@class='mat-slider-thumb']")));
+                actions.click();
+                actions.sendKeys(Keys.ARROW_LEFT);
+                actions.perform();
+                i++;}}
+
+        else {
+            while (i < (points - existingPoints)) {
+                actions.moveToElement(getDriver().findElement(By.xpath(" //mat-panel-title[contains(text(),'Q"+questionNumber+"')]/../../..//div[@class='mat-slider-thumb']")));
+                actions.click();
+                actions.sendKeys(Keys.ARROW_RIGHT);
+                actions.perform();
+                i++;}}
+    }
+
+    @And("SK click Save quiz button")
+    public void skClickSaveQuizButton()
+    {
+        getDriver().findElement(By.xpath("//span[contains(text(),'Save')]")).click();
+    }
+
+    @Then("SK should see quiz {string} in List Of Quizzes")
+    public void skShouldSeeQuizInListOfQuizzes(String quizName)
+    {
+        WaitUntillElementVisibility("//mat-panel-title[contains(text(),'"+quizName+"')]");
+        WebElement quiz = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+        Assert.assertTrue(quiz.isDisplayed());
+    }
+
+    @Then("SK select quiz {string} from List Of Quizzes")
+    public void skSelectQuizFromListOfQuizzes(String quizName) throws InterruptedException
+    {
+        WaitUntillElementVisibility("//mat-panel-title[contains(text(),'"+quizName+"')]");
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]")).click();
+        Thread.sleep(3000);
+    }
+
+    @Then("SK should see 'Maximum possible score' for quiz {string} is {int}")
+    public void skShouldSeeMaximumPossibleScoreIs(String quizName, int points)
+    {
+        String pointsText = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../..//tr[2]/td[2]")).getText();
+        int actualPoints = Integer.parseInt(pointsText);
+        Assert.assertEquals(actualPoints, points);
+    }
+
+    @Then("SK click Edit button from drop down menu for quiz {string}")
+    public void skClickEditButtonFromDropDownMenuForQuiz(String quizName)
+    {
+       getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../..//span[contains(text(),'Edit')]")).click();
+    }
+
+    @And("SK select question number {int}")
+    public void skSelectQuestionNumber(int questionNumber) throws InterruptedException
+    {
+        WaitUntillElementVisibility("//input[@formcontrolname='name']");
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]")).click();
+        Thread.sleep(3000);
     }
 }
