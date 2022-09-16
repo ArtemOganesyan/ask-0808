@@ -192,15 +192,16 @@
     Scenario: Student can change Password in Settings
       And SK type "student.account@gmail.com" in email field
       And SK type "Student" in password field
+      And SK click Sign In button
       And SK click Settings button
       And SK click Change Your Password
-      Then SK type "Student1" in current Password field
-      Then SK type "Student2" in New Password field
-      Then SK type "Student2" in Confirm New Password
+      Then SK type "Student" in current Password field
+      Then SK type "StudentABC" in New Password field
+      Then SK type "StudentABC" in Confirm New Password
       Then SK click Change button
       Then SK log out from current account
       Then SK type "student.account@gmail.com" in email field
-      Then SK type "Student2" in password field
+      Then SK type "StudentABC" in password field
       Then SK click Sign In button
       Then SK should see role as "STUDENT"
 
@@ -219,9 +220,54 @@
       Then SK click Sign In button
       Then SK should see role as "STUDENT"
 
+
+    @TextualQuestionPointsTeacherAbleToAddANumberOfPointsWhileCreatingQuiz
+    Scenario: Textual Question, Points - Teacher able to add a number of points while creating quiz
+      And SK type "teacher.account@gmail.com" in email field
+      And SK type "Teacher" in password field
+      And SK click Sign In button
+      And SK click Quizzes button
+      And SK click 'Create New Quiz' button
+      And SK type "Automation Test Quiz" in 'Title Of The Quiz' field
+      And SK click 'Add Question' button 1 times
+      And SK select Question Type "Textual" for question number 1
+      And SK type "Test question" for textual Question name field for question number 1
+      And SK set points to 8 for question number 1
+      And SK click Save quiz button
+      Then SK select quiz "Automation Test Quiz" from List Of Quizzes
+      Then SK should see 'Maximum possible score' for quiz "Automation Test Quiz" is 8
+
+
+    @TextualQuestionPointsTeacherAbleToEditPointsAfterQuizBeenCreated
+    Scenario: Textual Question, Points - Teacher able to Edit points after quiz been created
+      And SK type "teacher.account@gmail.com" in email field
+      And SK type "Teacher" in password field
+      And SK click Sign In button
+      And SK click Quizzes button
+      And SK click 'Create New Quiz' button
+      And SK type "Automation Test Quiz" in 'Title Of The Quiz' field
+      And SK click 'Add Question' button 1 times
+      And SK select Question Type "Textual" for question number 1
+      And SK type "Test question" for textual Question name field for question number 1
+      And SK set points to 8 for question number 1
+      And SK click Save quiz button
+      Then SK select quiz "Automation Test Quiz" from List Of Quizzes
+      Then SK click Edit button from drop down menu for quiz "Automation Test Quiz"
+#      Select question number from quiz-builder page
+      And SK select question number 1
+      And SK set points to 3 for question number 1
+      And SK click Save quiz button
+      Then SK select quiz "Automation Test Quiz" from List Of Quizzes
+      Then SK should see 'Maximum possible score' for quiz "Automation Test Quiz" is 3
+
     @DeleteAllAssignmentsByQuizName
     Scenario: Delete all Assignments by Quiz name (deletes all assignments with that quiz name)
-      Given SK open page "http://ask-stage.portnov.com/"
       And SK log in as Teacher
       And SK click Assigments button
       Then SK delete Assigments with quiz name "Test quiz"
+
+    @DeleteQuizByName
+    Scenario: Delete quiz by name (useful for quiz clean up after tests)
+      And SK log in as Teacher
+      And SK click Quizzes button
+      Then SK delete Quiz with name "Automation Test Quiz"

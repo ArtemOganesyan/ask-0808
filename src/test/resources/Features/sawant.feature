@@ -34,10 +34,10 @@ Feature: Internship ask-portnov feature
  @ask5
  Scenario: User registration
    Given SS open url "http://ask-stage.portnov.com/#/registration"
-   Then SS type "San" as firstname
-   Then SS type "Saw" as lastname
+   Then SS type "Sandy" as firstname
+   Then SS type "Tester" as lastname
    Then SS type "sawantsandhya.ni@gmail.com" as email
-   Then SS type "s001" as group code
+   Then SS type "San001" as group code
    Then SS type "12345" as password
    Then SS type "12345" as confirm password
    And SS click on signup button
