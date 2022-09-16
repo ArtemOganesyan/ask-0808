@@ -35,7 +35,7 @@ public class Syzonenko {
     private Integer userId;
     private String resetPasswordActivationCode;
 
-    private static String getPasswordConfirmationCode(String userEmail) throws SQLException {
+    public static String getPasswordConfirmationCode(String userEmail) throws SQLException {
         String result = "No data";
         Connection con = DriverManager.getConnection(DB_URL, USER, PASS);
 

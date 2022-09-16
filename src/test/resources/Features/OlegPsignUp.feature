@@ -4,15 +4,23 @@ Feature: other functionality
   Background: 
     Given OP go to login page "http://ask-stage.portnov.com"
 
+  @teacher1
+  Scenario: Teacher login in
+    Given OP fill in email "olegteacher@gmail.com" and password "portnov123"
+    Then OP  log in as Teacher
+
   @student1
   Scenario: Sign up
     Given OP fill out all fields required to register new student
     Then OP confirm the registration email
 
-  @teacher1
-  Scenario: Teacher login in
-    Given OP fill in email "olegteacher@gmail.com" and password "portnov123"
-    Then OP  log in as Teacher
+  @student2
+
+  Scenario: Password reset
+    Given OP submit email "olegst@gmail.com" for password reset
+    And then OP wait for 5 seconds
+    Then OP confirm password reset email
+
 
   @teacher2
   Scenario: Delete user
@@ -28,18 +36,10 @@ Feature: other functionality
    @teacher4
      Scenario: change Teacher role to Student
      Given OP sign in Teacher account
-     Then OP change Teacher role to Stude
+     Then OP change Teacher role to Student
 
 
-#
-#  @student2
-##    need to use url http://ask-stage.portnov.com/api/v1/reset-password/ and apply "POST" method instead of "GET" as in HOOKS
-#
-#  Scenario: Password reset
-#    Given OP submit email "olegst@gmail.com" for password reset
-#    And then OP wait for 3 seconds
-#    Then OP confirm password reset email
-#
+
 
 
 
