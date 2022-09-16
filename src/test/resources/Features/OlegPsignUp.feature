@@ -28,7 +28,7 @@ Feature: other functionality
    @teacher4
      Scenario: change Teacher role to Student
      Given OP sign in Teacher account
-     Then OP change Teacher role to Student
+     Then OP change Teacher role to Stude
 
 
 #
