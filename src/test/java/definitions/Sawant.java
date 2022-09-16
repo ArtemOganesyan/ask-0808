@@ -18,6 +18,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static support.TestContext.getDriver;
 
 public class Sawant {
+    private Integer userId;
+    private String activationCode;
+
     private static String emailXpath = "//input[@formcontrolname='email']";
     private static String passXpath = "//input[@formcontrolname='password']";
     private static String signInBtnXpath = "//span[contains(text(),'Sign In')]";
@@ -69,7 +72,7 @@ public class Sawant {
     @When("SS click on grades")
     public void ssClickOnGrades() {
         getDriver().findElement(By.xpath(myGradesMenuXpath)).click();
-        Assertions.assertThat(getDriver().findElement(By.xpath(myGradesTitleXpath)).isDisplayed());
+       Assertions.assertThat(getDriver().findElement(By.xpath(myGradesTitleXpath)).isDisplayed());
 
     }
 
@@ -104,7 +107,63 @@ public class Sawant {
     }
 
     @Given("SS open url {string}")
-    public void ssOpenUrl(String arg0) {
-        getDriver().get("http://ask-stage.portnov.com/#/registration");
+    public void ssOpenUrl(String url) {
+        getDriver().get(url);
+    }
+
+    @Then("SS type {string} as firstname")
+    public void ssTypeAsFirstname(String firstName) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='firstName']")).sendKeys(firstName);
+    }
+
+    @Then("SS type {string} as lastname")
+    public void ssTypeAsLastname(String lastName) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='las" +
+                "stName']")).sendKeys(lastName);
+
+    }
+
+    @Then("SS type {string} as email")
+    public void ssTypeAsEmail(String email) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys(email);
+    }
+
+    @Then("SS type {string} as group code")
+    public void ssTypeAsGroupCode(String group) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='group']")).sendKeys(group);
+    }
+
+    @Then("SS type {string} as password")
+    public void ssTypeAsPassword(String password) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys(password);
+    }
+
+    @Then("SS type {string} as confirm password")
+    public void ssTypeAsConfirmPassword(String confirmPassword) {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys(confirmPassword);
+    }
+
+    @And("SS click on signup button")
+    public void ssClickOnSignupButton() {
+        getDriver().findElement(By.xpath("//button[@type='submit']")).click();
+    }
+
+
+
+
+    @Then("SS get activation token for user {string}")
+    public void ssGetActivationTokenForUser(String email) throws SQLException {
+        String res = Helpers.getAccessToken(email);
+        System.out.println("The result from DB: " + res);
+        String [] val = res.split(";");
+        userId = Integer.valueOf(val[0]);
+        activationCode = val[1];
+        System.out.println("Separated values:  " +val[0] + "and" + val[1]);
+    }
+
+    @And("SS send activation request")
+    public void ssSendActivationRequest() throws IOException {
+         Helpers.activateUser(userId,activationCode);
+
     }
 }
