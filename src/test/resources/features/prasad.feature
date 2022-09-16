@@ -1,4 +1,5 @@
-   @feature278:
+
+  @feature278:
    Feature: Registration First Name
      @Scenario279
     Scenario: To verify that Alphanumeric and special characters are allowed in First Name
