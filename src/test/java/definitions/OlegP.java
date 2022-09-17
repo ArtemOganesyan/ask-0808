@@ -4,6 +4,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java8.Th;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,19 +12,11 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import support.Helpers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
-import static definitions.Syzonenko.getPasswordConfirmationCode;
 import static support.TestContext.getDriver;
 
 public class OlegP {
@@ -127,6 +120,42 @@ public class OlegP {
         getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).isDisplayed();
     }
 
+    @Given("OP start registering new student")
+    public void opStartRegisteringNewStudent() throws InterruptedException {
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
+        Thread.sleep(1500);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).isDisplayed();
+        getDriver().findElement(By.xpath("//span[contains(text(),'Register Now')]")).click();
+        getDriver().findElement(By.xpath("//span[contains (text(), 'Back to Login')]")).isDisplayed();
+        Thread.sleep(1000);
+
+
+    }
+
+    @Then("OP fill out all fields required to register a new student")
+    public void opFillOutAllFieldsRequiredForRegistration() throws InterruptedException {
+        getDriver().findElement(By.xpath("//input[@formcontrolname='firstName']")).sendKeys("Oleg");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='lastName']")).sendKeys("Pasish");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='email']")).sendKeys("olegst@gmail.com");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='group']")).sendKeys("GRP123");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys("portnov123");
+        getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys("portnov123");
+        getDriver().findElement(By.xpath("//span[contains(text(),'Register Me')]")).click();
+        Thread.sleep(1500);
+        getDriver().findElement(By.xpath("//span[contains(text(),'Back to Login Page')]")).isDisplayed();
+    }
+
+    @Then("OP confirm registration email")
+    public void opConfirmRegsitrationEmail() throws SQLException, IOException {
+        String acToc = Helpers.getAccessToken("olegst@gmail.com");
+        System.out.println(acToc);
+        String[] resp = acToc.split(";");
+        int userId = Integer.valueOf(resp[0]);
+        String activationCode = resp[1];
+        Helpers.activateUser(userId, activationCode);
+    }
+
 
     @Given("OP go to login page {string}")
     public void opGoToLoginPage(String url) {
@@ -143,7 +172,7 @@ public class OlegP {
         getDriver().findElement(By.xpath("//input[@formcontrolname='password']")).sendKeys("portnov123");
         getDriver().findElement(By.xpath("//input[@formcontrolname='confirmPassword']")).sendKeys("portnov123");
         getDriver().findElement(By.xpath("//span[contains(text(),'Register Me')]")).click();
-        Thread.sleep(2000);
+        Thread.sleep(1500);
         getDriver().findElement(By.xpath("//span[contains(text(),'Back to Login Page')]")).isDisplayed();
     }
 
@@ -192,18 +221,15 @@ public class OlegP {
 
     @Then("OP confirm password reset email")
     public void opConfirmPasswordResetEmail() throws SQLException, IOException {
-        String passwordConfirmationCode = getPasswordConfirmationCode("olegst@gmail.com");
-        String[] values = passwordConfirmationCode.split(";");
-        String id = values[0];
-        String code = values[1];
-        System.out.println("id value is:" + id + "and code value is:" + code);
-
-        String response = getPasswordConfirmationCode("olegst@gmail.com");
-        String[] values1 = response.split(";");
-        int id1 = Integer.parseInt(values[0]);
-        code = values1[1];
-        System.out.println("id value is:"+ id1 + "" + "and activation code value is:" + code);
-        resetPassword(id1,code,"oleg1234port");
+        String acToc = Helpers.getAccessToken("olegst@gmail.com");
+        System.out.println(acToc);
+        String[] resp = acToc.split(";");
+        int userId = Integer.valueOf(resp[0]);
+        String activationCode = resp[1];
+        Helpers.activateUser(userId, activationCode);
+        getDriver().findElement(By.xpath("//input[@placeholder='New Password']")).sendKeys("portnov123");
+        getDriver().findElement(By.xpath("//input[@placeholder='Confirm New Password']")).sendKeys("portnov123");
+        getDriver().findElement(By.xpath("//input[@placeholder='Confirm New Password']")).click();
 
     }
 
@@ -304,39 +330,5 @@ public class OlegP {
         getDriver().findElement(By.xpath("//span[contains(text(),'Change Role')]")).click();
         Thread.sleep(2000);
         getDriver().findElement(By.xpath("//td[contains(text(),'STUDENT')]")).isDisplayed();
-    }
-
-    private static void resetPassword(int userId, String resetPasswordActivationCode, String newPassword) throws IOException {
-        String inputJson = "{\"password\":" + " " + '"' + newPassword + "\"}";
-        System.out.println(inputJson);
-        URL url = new URL("http://ask-stage.portnov.com/api/v1/reset-password/" + userId + "/" + resetPasswordActivationCode + "");
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-type", "application/json");
-        con.setRequestProperty("Accept", "application/json");
-        con.setDoOutput(true);
-        try (OutputStream os = con.getOutputStream()) {
-            byte[] input = inputJson.getBytes(StandardCharsets.UTF_8);
-            os.write(input, 0, input.length);
-        }
-        int responseCode = con.getResponseCode();
-        boolean statusCode = false;
-        System.out.println("Response code is: " + responseCode);
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-            System.out.println(response);
-            org.testng.Assert.assertFalse(statusCode);
-        } else {
-            System.out.println("Error occurred while trying to send POST request");
-            //noinspection ConstantConditions
-            Assert.assertTrue(statusCode);
-        }
     }
 }
