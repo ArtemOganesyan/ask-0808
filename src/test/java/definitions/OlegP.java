@@ -196,13 +196,13 @@ public class OlegP {
         String[] values = passwordConfirmationCode.split(";");
         String id = values[0];
         String code = values[1];
-        System.out.println("id value is:" + id + "and code value is:" + code);
+//        System.out.println("id value is:" + id + "and code value is:" + code);
 
         String response = getPasswordConfirmationCode("olegst@gmail.com");
         String[] values1 = response.split(";");
         int id1 = Integer.parseInt(values[0]);
         code = values1[1];
-        System.out.println("id value is:"+ id1 + "" + "and activation code value is:" + code);
+        System.out.println("id:"+ id1 + ";" + " activation code:" + code);
         resetPassword(id1,code,"oleg1234port");
 
     }
