@@ -1,4 +1,4 @@
-@SyzonenkoFeature
+@SyzonenkoFeatAure
   Feature: 'Create Assignment: Students', 'Grading: Quiz with no textual question'
     Background:
       Given SK open page "http://ask-stage.portnov.com/"
@@ -260,11 +260,49 @@
       Then SK select quiz "Automation Test Quiz" from List Of Quizzes
       Then SK should see 'Maximum possible score' for quiz "Automation Test Quiz" is 3
 
+
+    @TextualQuestionPointsStudentsCanSeePointsForGradedQuiz
+      Scenario: Textual Question, Points - Students can see points for graded quiz
+#      And SK type "teacher.account@gmail.com" in email field
+#      And SK type "Teacher" in password field
+#      And SK click Sign In button
+#      And SK click Assigments button
+#      And SK click Create New Assignment button
+#      And SK select quiz "Automation Test Quiz" from 'Select quiz to assgin' drop-down list
+#      And SK select Student from 'Students list'
+#      And SK click Give Assignment button
+#      And SK log out from current account
+#      And SK type "student.account@gmail.com" in email field
+#      And SK type "Student" in password field
+#      And SK click Sign In button
+#      And SK click My Assigments button
+#      And SK click Go to Assessment button for quiz "Automation Test Quiz"
+#      And SK type "Anwser" as an anwser for question number "1"
+#      And SK click Submit my Answer button
+#      And SK log out from current account
+#      And SK type "teacher.account@gmail.com" in email field
+#      And SK type "Teacher" in password field
+#      And SK click Sign In button
+#      And SK click Submissions button
+#      And SK click For Grade navigation bar
+#      And SK click Grade button for quiz name "Automation Test Quiz"
+#      And SK grade question number 1 as 3 points
+#      And SK click Save quiz button
+#      And SK log out from current account
+      And SK type "student.account@gmail.com" in email field
+      And SK type "Student" in password field
+      And SK click Sign In button
+      And SK click My Grades button
+      And SK click Details button for graded quiz name "Automation Test Quiz"
+      Then SK shoulde see question number 1 graded as 3 points
+
+
+
     @DeleteAllAssignmentsByQuizName
     Scenario: Delete all Assignments by Quiz name (deletes all assignments with that quiz name)
       And SK log in as Teacher
       And SK click Assigments button
-      Then SK delete Assigments with quiz name "Test quiz"
+      Then SK delete Assigments with quiz name "Automation Test Quiz"
 
     @DeleteQuizByName
     Scenario: Delete quiz by name (useful for quiz clean up after tests)
