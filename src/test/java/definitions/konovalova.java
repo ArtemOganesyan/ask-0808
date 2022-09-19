@@ -25,6 +25,7 @@ public class konovalova {
         getDriver().get(url);
     }
 
+
     @When("ZK type {string} into element with xpath {string}")
     public void zkTypeIntoElementWithXpath(String text, String xpath) {
         getDriver().findElement(By.xpath(xpath)).sendKeys(text);
@@ -55,8 +56,4 @@ public class konovalova {
     public void clickZKOnTheElementWithXpath(String xpath) {
         getDriver().findElement(By.xpath(xpath)).click();
     }
-
-
-
-
 }
