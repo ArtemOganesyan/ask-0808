@@ -15,10 +15,10 @@
     Scenario: Validate my grades page as a student
       When LPR click on grades
 
-    @scenario3
-    Scenario: Log in as a teacher, create a quiz
-      Given LPR go to "http://ask-stage.portnov.com" page
-      Then LPR login as a teacher with credentials "dakkagoblin@whymustyarz.com" and "abc123"
-      And LPR wait for 5 sec until "//h5[contains(text(),'Settings')]" is displayed
+    # @scenario3
+    # Scenario: Log in as a teacher, create a quiz
+    #  Given LPR go to "http://ask-stage.portnov.com" page
+    #  Then LPR login as a teacher with credentials "dakkagoblin@whymustyarz.com" and "abc123"
+    #  And LPR wait for 5 sec until "//h5[contains(text(),'Settings')]" is displayed
      # Then LPR click on quizzes
      # And LPR create new quiz
