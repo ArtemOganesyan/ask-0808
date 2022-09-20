@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -276,6 +277,125 @@ public class manukyanHw {
     @And("AM can see answers")
     public void amCanSeeAnswers() {
         assertThat(getDriver().findElement(By.xpath("//div[contains(text(),'Answer')]")).isDisplayed());
+    }
+
+    @Then("AM go to Quizzes")
+    public void amGoToQuizzes() throws InterruptedException {
+        getDriver().findElement(By.xpath("//h5[contains (text(),'Quizzes')]")).click();
+        Thread.sleep(2000);
+    }
+
+    @And("AM click on Create New Quiz")
+    public void amClickOnCreateNewQuiz() throws InterruptedException{
+        getDriver().findElement(By.xpath("//span[contains (text(),'Create New Quiz')]")).click();
+        Thread.sleep(2000);
+    }
+
+    @Then("AM type {string} as a title")
+    public void amTypeAsATitle(String quizName) {
+        getDriver().findElement(By.xpath("//input[@placeholder='Title Of The Quiz *']")).sendKeys(quizName);
+    }
+
+    @And("AM click on Add Question button")
+    public void amClickOnAddQuestionButton() throws InterruptedException{
+        getDriver().findElement(By.xpath("//span[contains(.,'Add Question')]")).click();
+        Thread.sleep(2000);
+    }
+
+    @And("AM choose textual type of question")
+    public void amChooseTextualTypeOfQuestion() {
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q1')]/../../..//*[contains(text(),'Textual')]")).click();
+    }
+
+    @Then("AM types {string} in textual question")
+    public void amTypesInTextualQuestion(String questionT) {
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q1')]/../../..//textarea[@placeholder='Question *']")).sendKeys(questionT);
+    }
+
+    @Then("AM choose single-choice type of question")
+    public void amChooseSingleChoiceTypeOfQuestion() {
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q2')]/../../..//*[contains(text(),'Single-Choice')]")).click();
+    }
+
+    @And("AM types {string} is single choice question")
+    public void amTypesIsSingleChoiceQuestion(String questionSC) {
+        getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q2')]/../../..//textarea[@placeholder='Question *']")).sendKeys(questionSC);
+
+    }
+
+    @And("AM save the Quiz")
+    public void amSaveTheQuiz() throws InterruptedException {
+        getDriver().findElement(By.xpath("//span[contains(text(),'Save')]")).click();
+        Thread.sleep(2000);
+    }
+
+    @And("AM type {string} in the first answer option and mark as right question")
+    public void amTypeInTheFirstAnswerOptionAndMarkAsRightQuestion(String answer) {
+        getDriver().findElement(By.xpath("//textarea[@placeholder='Option 1*']")).sendKeys(answer);
+        getDriver().findElement(By.xpath("//textarea[@placeholder='Option 1*']/../../../../..//mat-radio-button")).click();
+
+    }
+
+    @And("AM type {string} in the second answer option")
+    public void amTypeInTheSecondAnswerOption(String answer) {
+        getDriver().findElement(By.xpath("//textarea[@placeholder='Option 2*']")).sendKeys(answer);
+    }
+
+    @And("AM search for {string}")
+    public void amSearchFor(String quiz) {
+        getDriver().findElement(By.xpath("//span[contains(.,'My cool quiz')]"));
+
+    }
+
+
+    @Then("AM delete the quiz {string}")
+    public void amDeleteTheQuiz(String quizName) throws InterruptedException{
+        WebElement quize = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+        quize.click();
+        Thread.sleep(2000);
+        WebElement deleteBtn = getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]"));
+        deleteBtn.click();
+        Thread.sleep(2000);
+        WebElement closeDialog = getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]"));
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(closeDialog);
+        actions.click();
+        actions.perform();
+        Thread.sleep(3000);
+
+
+
+
+    }
+
+    @Then("AM delete all quizzes {string}")
+    public void amDeleteAllQuizzes(String quizName) throws InterruptedException {
+        List<WebElement> quizes = getDriver().findElements(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+        for (int i= 0; i< quizes.size(); i++)
+            try {
+                quizes.get(i).click();
+                Thread.sleep(2000);
+                getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]")).click();
+                Thread.sleep(2000);
+                Thread.sleep(2000);
+                Actions actions = new Actions(getDriver());
+                actions.moveToElement(getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]")));
+                actions.click();
+                actions.perform();
+                Thread.sleep(4000);
+            } catch (StaleElementReferenceException e) {
+                quizes = getDriver().findElements(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]"));
+                quizes.get(i).click();
+                Thread.sleep(2000);
+                getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'"+quizName+"')]/../../../div//button/span[contains(text(),'Delete')]")).click();
+                Thread.sleep(2000);
+                Actions actions = new Actions(getDriver());
+                actions.moveToElement(getDriver().findElement(By.xpath("//ac-modal-confirmation//button[2]")));
+                actions.click();
+                actions.perform();
+                Thread.sleep(4000);
+            }
+
     }
 }
 
