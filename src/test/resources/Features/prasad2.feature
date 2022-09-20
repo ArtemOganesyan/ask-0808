@@ -1,6 +1,6 @@
 @testHw
 Feature: Password Field
-  @test483
+  @test4
   Scenario: Password and confirm password should match/Negative
     Given MP open url "http://ask-stage.portnov.com"
     Then MP click Register Now button
@@ -18,7 +18,7 @@ Feature: Password Field
     Then MP click Register Now button
     Then MP type all required field
     And MP click Register Me button
-    Then MP will wait 1 sec
+    Then MP will wait 3 sec
     Then MP get registered message
 
 #  @test2

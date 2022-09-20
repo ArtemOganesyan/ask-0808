@@ -63,11 +63,11 @@
 #       Given MAP open url
 #       And MAP type email and password
 #       And MAP click on sign in button
-@feature1
-
-     @ScenarioUrl
-     Scenario: Url
-       Given MP open url "http://ask-stage.portnov.com"
+#@feature1
+#
+#     @ScenarioUrl
+#     Scenario: Url
+#       Given MP open url "http://ask-stage.portnov.com"
 
 
 

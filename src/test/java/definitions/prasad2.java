@@ -107,11 +107,11 @@ public class prasad2 {
 //        sleep(2000);
 //    }
 
-//    @Then("MP get error message")
-//    public void mpGetErrorMessage() {
-//        getDriver().findElement(By.xpath("//mat-error[@id='mat-error-0']")).isDisplayed();
-//
-//    }
+    @Then("MP get error message")
+    public void mpGetErrorMessage() {
+        getDriver().findElement(By.xpath("//mat-error[@id='mat-error-0']")).isDisplayed();
+
+    }
 
     @Then("MP get registered message")
     public void mpGetRegisteredMessage() {
@@ -145,7 +145,7 @@ public class prasad2 {
 
     @Then("MP will wait {int} sec")
     public void mpWillWaitSec(int timeout) throws InterruptedException {
-        Thread.sleep(1000);
+        Thread.sleep(3000);
     }
 
 
