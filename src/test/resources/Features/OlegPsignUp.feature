@@ -14,21 +14,21 @@ Feature: other functionality
     Given OP fill in email "olegteacher@gmail.com" and password "portnov123"
     Then OP  log in as Teacher
 
-  @teacher2
-  Scenario: Delete user
-    Given OP log with teacher email:"olegteacher@gmail.com" and password "portnov123"
-    Then OP delete user profile of student "Oleg Pasish"
 
-
-   @teacher3
+   @teacher2
    Scenario: change Student role to Teacher
      Given OP log in Teacher account
      Then OP change Student role to Teacher
 
-   @teacher4
+   @teacher3
      Scenario: change Teacher role to Student
      Given OP sign in Teacher account
      Then OP change Teacher role to Student
+
+  @teacher4
+  Scenario: Delete user
+    Given OP log with teacher email:"olegteacher@gmail.com" and password "portnov123"
+    Then OP delete user profile of student "Oleg Pasish"
 
 
 #
