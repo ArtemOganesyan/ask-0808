@@ -1,6 +1,6 @@
 @feature1
   Feature: Student home page
-    Background: 
+    Background:
       Given MP navigate to url "http://ask-stage.portnov.com"
       Then MP type "testteer050@gmail.com" in email field
       Then MP type "12345Abc" in password field

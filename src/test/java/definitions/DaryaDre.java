@@ -27,7 +27,7 @@ public class DaryaDre {
     @Given("DD open url {string}")
     public void iDDOpenUrl(String url) throws InterruptedException {
         getDriver().get(url);
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
     }
 
     @Then("Type DD the email {string} in the email field")
@@ -43,7 +43,7 @@ public class DaryaDre {
     @Then("Click DD on the Sign In button")
     public void clickDDOnTheSignInButton() throws InterruptedException {
         getDriver().findElement(By.xpath(signInBtn)).click();
-        Thread.sleep(5 * 1000);
+        Thread.sleep(7 * 1000);
     }
 
     @And("DD assign the quiz to the student")
@@ -51,15 +51,15 @@ public class DaryaDre {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Assignments')]")).click();
         Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'Create New Assignment')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'N001')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'Select Quiz To Assign')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'DaryaDre Quize Automation')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'Give Assignment')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
     }
 
     @And("DD logout as a Teacher")
@@ -112,9 +112,14 @@ public class DaryaDre {
 
     @Then("Click DD on the Details button")
     public void clickDDOnTheDetailsButton() {
-        List<WebElement> array = getDriver().findElements(By.xpath("//span[contains(text(),'Details')]"));
-        WebElement lastbutton = array.stream().reduce((first, second) -> second).orElseThrow();
+
+        var items = getDriver().findElements(By.xpath("//span[contains(text(),'Details')]"));
+        var lastbutton = items.get(items.size()-1);
         lastbutton.click();
+
+//        List<WebElement> array = getDriver().findElements(By.xpath("//span[contains(text(),'Details')]"));
+//        WebElement lastbutton = array.stream().reduce((first, second) -> second).orElseThrow();
+//        lastbutton.click();
     }
 
     @And("DD verify the Other text area contains provided text {string}")
