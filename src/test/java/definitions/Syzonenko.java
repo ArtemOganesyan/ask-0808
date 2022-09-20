@@ -4,11 +4,14 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import cucumber.api.java8.Th;
+import org.assertj.core.api.Assertions;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.Assertion;
 
 
 import java.io.BufferedReader;
@@ -35,6 +38,7 @@ public class Syzonenko {
     static final String PASS = "password";
     private Integer userId;
     private String resetPasswordActivationCode;
+    private static String submissionDateTime;
 
     private static String getPasswordConfirmationCode(String userEmail) throws SQLException
     {
@@ -275,12 +279,16 @@ public class Syzonenko {
         Actions actions = new Actions(getDriver());
         actions.sendKeys(Keys.ENTER);
         actions.perform();
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yy HH:mm");
+        submissionDateTime = format.format(date);
+        Thread.sleep(2000);
     }
 
     @When("SK click My Grades button")
-    public void iClickMyGradesButton()
-    {
+    public void iClickMyGradesButton() throws InterruptedException {
         getDriver().findElement(By.xpath("//h5[contains(text(),'My Grades')]")).click();
+        Thread.sleep(3000);
     }
 
     @Then("SK should see quiz {string} with Status: {string}")
@@ -291,6 +299,7 @@ public class Syzonenko {
         String actualQuizName = getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]")).getText();
         Assert.assertEquals(actualQuizName, quizName);
         Assert.assertEquals(actualStatus, status);
+        System.out.println("Status is: " + " " + actualStatus);
     }
 
     @SuppressWarnings("BusyWait")
@@ -326,7 +335,7 @@ public class Syzonenko {
                 actions.perform();
                 Thread.sleep(4000);
             }
-        System.out.println(allquizes.size() + "assigments with quiz name:" + " " + quizName + " " + "was deleted");
+        System.out.println(allquizes.size() + " " + "assigments with quiz name:" + " " + quizName + " " + "was deleted");
     }
 
     @And("SK click Settings button")
@@ -575,9 +584,9 @@ public class Syzonenko {
     }
 
     @And("SK click Save quiz button")
-    public void skClickSaveQuizButton()
-    {
+    public void skClickSaveQuizButton() throws InterruptedException {
         getDriver().findElement(By.xpath("//span[contains(text(),'Save')]")).click();
+        Thread.sleep(2000);
     }
 
     @Then("SK should see quiz {string} in List Of Quizzes")
@@ -616,5 +625,78 @@ public class Syzonenko {
         WaitUntillElementVisibility("//input[@formcontrolname='name']");
         getDriver().findElement(By.xpath("//mat-panel-title[contains(text(),'Q"+questionNumber+"')]")).click();
         Thread.sleep(3000);
+    }
+
+    @And("SK type {string} as an anwser for question number {int}")
+    public void skTypeAsAnAnwserForQuestionNumber(String textAnwser, Integer questionNumber) {
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Question "+questionNumber+"')]/..//textarea")).sendKeys(textAnwser);
+    }
+
+    @And("SK click Submissions button")
+    public void skClickSubmissionsButton() throws InterruptedException {
+        getDriver().findElement(By.xpath("//h5[contains(text(),'Submissions')]")).click();
+        Thread.sleep(3000);
+    }
+
+    @And("SK click For Grade navigation bar")
+    public void skClickForGradeNavigationBar() {
+        getDriver().findElement(By.xpath("//div[contains(text(),'For Grade')]")).click();
+
+    }
+
+    @And("SK click Grade button for quiz name {string}")
+    public void skClickGradeButtonForQuizName(String quizName) throws InterruptedException {
+        getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]/..//button")).click();
+        Thread.sleep(3000);
+    }
+
+    @And("SK grade question number {int} as {int} points")
+    public void skGradeQuestionNumberAsPoints(int questionNumber, int points) {
+        WebElement addPointsBtn = getDriver().findElement(By.xpath("//h5[contains(text(), 'Question "+questionNumber+"')]/../..//span[contains(text(),'+')]"));
+        int i=0;
+        while (i<points) {
+            addPointsBtn.click();
+            i++;
+        }
+    }
+
+    @And("SK click Details button for graded quiz name {string}")
+    public void skClickDetailsButtonForGradedQuizName(String quizName) throws InterruptedException {
+        getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]/..//button")).click();
+        Thread.sleep(3000);
+    }
+
+    @Then("SK shoulde see question number {int} graded as {int} points")
+    public void skShouldeSeeQuestionNumberGradedAsPoints(int questionNumber, int points) {
+        String actualPointsText = getDriver().findElement(By.xpath("//h5[contains(text(),'Question "+questionNumber+"')]/../div[contains(text(),'Points')]")).getText().substring(8);
+        int actualPoints = Integer.parseInt(actualPointsText);
+        Assert.assertEquals(points, actualPoints);
+    }
+
+    @And("SK should see quiz {string} in For Grade page")
+    public void skShouldSeeQuizInForGradePage(String quizName) {
+        String actualQuizName = getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]")).getText();
+        Assert.assertEquals(actualQuizName, quizName);
+    }
+
+
+    @Then("SK should see date and time match submission date and time for quiz name {string}")
+    public void skShouldSeeDateAndTimeMatchSubmissionDateAndTimeForQuizName(String quizName) {
+        String actualDateTime = getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]/../td[1]")).getText();
+        Assert.assertEquals(actualDateTime, submissionDateTime);
+        System.out.print("For Grade date and time is:" + " " + actualDateTime);
+        System.out.println("Time of submission is:" + " " + submissionDateTime);
+    }
+
+    @And("SK click Reviewed navigation menu")
+    public void skClickReviewedNavigationMenu() throws InterruptedException {
+        getDriver().findElement(By.xpath("//div[contains(text(),'Reviewed')]")).click();
+        Thread.sleep(2000);
+    }
+
+    @Then("SK should see quiz {string} in Reviewed page")
+    public void skShouldSeeQuizInReviewedPage(String quizName) {
+        WebElement quiz = getDriver().findElement(By.xpath("//td[contains(text(),'"+quizName+"')]"));
+        Assert.assertTrue(quiz.isDisplayed());
     }
 }
