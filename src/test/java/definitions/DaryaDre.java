@@ -6,12 +6,16 @@ package definitions;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
+
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.By;
 //https://www.javatpoint.com/selenium-waits
-
 import static org.assertj.core.api.Assertions.*;
 import static support.TestContext.getDriver;
 
@@ -21,8 +25,9 @@ public class DaryaDre {
     private static String signInBtn = "//span[contains(text(),'Sign In')]";
 
     @Given("DD open url {string}")
-    public void iDDOpenUrl(String url) {
+    public void iDDOpenUrl(String url) throws InterruptedException {
         getDriver().get(url);
+        Thread.sleep(2 * 1000);
     }
 
     @Then("Type DD the email {string} in the email field")
@@ -38,13 +43,13 @@ public class DaryaDre {
     @Then("Click DD on the Sign In button")
     public void clickDDOnTheSignInButton() throws InterruptedException {
         getDriver().findElement(By.xpath(signInBtn)).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
     }
 
     @And("DD assign the quiz to the student")
     public void ddAssignTheQuizToTheStudent() throws InterruptedException {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Assignments')]")).click();
-        Thread.sleep(2 * 1000);
+        Thread.sleep(5 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'Create New Assignment')]")).click();
         Thread.sleep(2 * 1000);
         getDriver().findElement(By.xpath("//span[contains(text(),'N001')]")).click();
@@ -157,4 +162,19 @@ public class DaryaDre {
         getDriver().findElement(By.xpath("//h5[contains(text(),'Log Out')]")).click();
         getDriver().findElement(By.xpath("//span[contains(text(),'Log Out')]")).click();
 
-}}
+//    @Then("DD Pass the quiz with the {int} characters in the Other field")
+//    public void ddTypeIntCharactersInTheOtherField(int number) {
+//        getDriver().findElement(By.xpath("//textarea[@placeholder='Enter your answer']")).sendKeys("DaryaD");
+//        getDriver().findElement(By.xpath("//label[@for='mat-radio-3-input']")).click();
+//        getDriver().findElement(By.xpath("//label[@for='mat-checkbox-2-input']")).click();
+//        getDriver().findElement(By.xpath("//label[@for='mat-checkbox-3-input']")).click();
+//
+//        boolean useletters = true;
+//        boolean usenumbers = false;
+//        String generatedString = RandomStringUtils.random(number, useletters, usenumbers);
+//        getDriver().findElement(By.xpath("//textarea[@placeholder='Other']")).sendKeys(generatedString);
+//
+//        String randomText1000 = getDriver().findElement(By.xpath("//textarea[@placeholder='Other']")).getText();
+//        randomText10001().
+}
+}
