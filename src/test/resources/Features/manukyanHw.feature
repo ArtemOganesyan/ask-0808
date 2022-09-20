@@ -13,7 +13,7 @@ Feature: Student - my grades
 
 
 
-  
+
   @test3
   Scenario: My Grades info accessible through fixed navigation menu
     And AM go to My Grades

@@ -8,7 +8,7 @@ Feature: Internship ask-portnov feature
     Then SS click SignIn button
     And SS wait for 6 sec
 
- # @ask_portnov-Teacher
+  @ask_portnov-Teacher
     Scenario: Login as Teacher
     Given SS go to the "http://ask-stage.portnov.com" page
     Then SS type "sawantsandhya.ni@gmail.com" into email field
