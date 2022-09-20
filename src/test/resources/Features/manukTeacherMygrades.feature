@@ -46,5 +46,33 @@ Feature: Student - my grades
     And AM go to My Grades
     Then AM verify that Graded at is "Automatic"
 
+  @testQuiz
+
+  Scenario: Teacher creates quiz
+
+    Then AM go to Quizzes
+    And AM click on Create New Quiz
+    Then AM type "My cool quiz" as a title
+    And AM click on Add Question button
+    And AM choose textual type of question
+    Then AM types "What is your name?" in textual question
+    And AM click on Add Question button
+    Then AM choose single-choice type of question
+    And AM types "How many miles in mile?" is single choice question
+    And AM type "One" in the first answer option and mark as right question
+    And AM type "Two" in the second answer option
+    And AM save the Quiz
+#    Then AM delete the quiz "My cool quiz"
+
+  @tet56
+  Scenario: Teacher delete all quizzes with same name
+    Then AM go to Quizzes
+    Then AM delete all quizzes "My cool quiz"
+
+
+
+
+
+
 
 
