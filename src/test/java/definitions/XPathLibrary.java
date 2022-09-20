@@ -11,6 +11,7 @@ public class XPathLibrary {
     public static String myAssignmentsTitleXpath = "//h4[contains(text(),'My Assignments')]";
     public static String myGradesTitleXpath = "//h4[contains(text(),'My Grades')]";
     public static String quizzesXpath = "//h5[contains(text(),'Quizzes')]";
+    public static String quizzesListTitleXpath = "//h4[contains(text(),'List of Quizzes')]";
     public static String createQuizBtnXpath = "//*[contains(text(), 'Create New Quiz')]";
     public static String quizTitleXpath = "//input[@formcontrolname='name']";
     public static String addQuestionBtnXpath = "//div/button/span/mat-icon";
