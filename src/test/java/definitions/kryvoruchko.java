@@ -50,6 +50,20 @@ public class kryvoruchko {
             sleep(sec * 1000);
         }
     }
+
+
+
+    @And("VK go to My grates {string} page")
+    public void vkGoToMyGratesPage(String arg0) {
+        getDriver().findElement(By.xpath(XPathLibrary.myGradesMenuXpath)).click();
+        assertThat(getDriver().findElement(By.xpath(XPathLibrary.myGradesTitleXpath)).isDisplayed());
+    }
+
+    @When("I click on grates")
+    public void iClickOnGrates() {
+        getDriver().findElement(By.xpath(XPathLibrary.myGradesMenuXpath)).click();
+        assertThat(getDriver().findElement(By.xpath(XPathLibrary.myGradesTitleXpath)).isDisplayed());
+    }
 }
 
 
